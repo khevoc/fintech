@@ -109,6 +109,7 @@ const COLORS = {
   textLight: "#F8F9FA", // Texto claro
 };
 
+
 // --- ICONOS PROFESIONALES (Símbolos unicode) ---
 const ICONS = {
   dashboard: '⌂', // Home
@@ -121,6 +122,7 @@ const ICONS = {
   factory: '🏭',
   advance: '💰',
   user: '👤',
+  faq: '❓',
 
   // Actividad/Notificaciones
   releaseAction: '✍️',
@@ -851,6 +853,46 @@ const DashboardContent = ({ totalBalance, totalEscrowHeld, totalPendingLoans, ch
 };
 
 
+const BottomMobileNav = ({ active, setActive, display, isVisible }) => {
+
+  const navItems = [
+    { id: 'dashboard', icon: ICONS.dashboard, label: 'Home' },
+    { id: 'bankaccounts', icon: ICONS.bankaccounts, label: 'Cuentas' },
+    { id: 'transfer', icon: ICONS.transfer, label: 'Transferir', action: () => alert('Initiate Transfer') },
+    { id: 'faq', icon: ICONS.faq, label: 'FAQ' },
+    { id: 'user', icon: ICONS.user, label: 'Perfil' },
+  ];
+  const visibilityClass = isVisible ? 'flex' : 'none'; 
+  const handleNavClick = (item) => {
+    if (item.action) {
+      item.action();
+    } else {
+      setActive(item.id);
+    }
+  };
+
+  return (
+    <div className="mobile-nav-bar" >
+      {navItems.map((item) => (
+        <motion.button
+          key={item.id}
+          className="nav-item"
+          onClick={() => handleNavClick(item)}
+          whileTap={{ scale: 0.9 }}
+          style={{
+            color: active === item.id || (item.id === 'dashboard' && active === 'dashboard') ? COLORS.teal : 'var(--muted-color)',
+            fontWeight: active === item.id ? 700 : 500,
+            display: visibilityClass,
+          }}
+        >
+          <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+          <span className="tiny">{item.label}</span>
+        </motion.button>
+      ))}
+    </div>
+  );
+};
+
 // --- COMPONENTE CONTENEDOR DE VISTAS ---
 const ActiveView = ({ active, theme, data }) => {
   const viewMap = {
@@ -880,7 +922,12 @@ const ActiveView = ({ active, theme, data }) => {
     </AnimatePresence>
   );
 };
-
+const calculateMenuVisibility = (isLoggedIn, activePage) => {
+  // El menú es visible si:
+  // 1. El usuario está loggeado (isLoggedIn === true)
+  // 2. Y la página activa NO es la de 'login' (activePage !== 'login')
+  return isLoggedIn && activePage !== 'login';
+};
 
 // --- COMPONENTE PRINCIPAL ---
 export default function ClearoApp() {
@@ -892,6 +939,16 @@ export default function ClearoApp() {
   const [animatingLogin, setAnimatingLogin] = useState(false);
   const [logoTrigger, setLogoTrigger] = useState(0);
   const [currentChartType, setCurrentChartType] = useState('cashflow');
+  const [activeView, setActiveView] = useState('dashboard');
+
+  const menuVisible = calculateMenuVisibility(loggedIn, active);
+
+  const updateUI = () => {
+    
+        bottomNav.classList.remove('mobile-nav-bar-hidden');
+        document.body.style.paddingBottom = '4rem'; 
+};
+
 
   // --- DATA ---
   const data = {
@@ -942,13 +999,14 @@ export default function ClearoApp() {
 
   useEffect(() => {
     if (!loggedIn && emailRef.current) {
-      emailRef.current.focus();
+      emailRef.current.focus();      
     }
   }, [loggedIn]);
 
   // --- EFECTO DE PARTÍCULAS (Canvas) - EL EFECTO GLOW/SUTIL ---
   useEffect(() => {
     const canvas = document.getElementById("particle-bg");
+    
     if (!canvas) return; // Si no existe el canvas, salir
 
     // Solo en modo oscuro y si está logueado
@@ -1074,6 +1132,37 @@ export default function ClearoApp() {
           border-bottom: 1px solid var(--border);
           transition: background 0.3s ease, border-color 0.3s ease;
         }
+        
+        /* --- Mobile Navigation Bar (Nuevo) --- */
+        .mobile-nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 500;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .mobile-nav-bar-hidden{
+            display: none;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 0;
+            width: 20%;
+            transition: color 0.2s;
+        }
 
         /* Brand y Logo */
         .brand { display:flex; align-items:center; gap:12px; }
@@ -1184,6 +1273,7 @@ export default function ClearoApp() {
         /* Corrección Móvil para Overlay */
         @media(max-width:720px){
           .overlay { left: 16px; right: 16px; width: auto; top: 82px; max-height: calc(100vh - 120px); }
+          
         }
         
         /* Elementos del Menú (Framer Motion) */
@@ -1310,6 +1400,7 @@ export default function ClearoApp() {
             onClick={() => {
               setActive("dashboard");
               setMenuOpen(false);
+              updateUI();
               if (!loggedIn) handleSignIn();
             }}
             initial={{ scale: 0.9, opacity: 0 }}
@@ -1479,9 +1570,10 @@ export default function ClearoApp() {
           </motion.div>
         ) : (
           /* --- APLICACIÓN PRINCIPAL (VISTAS ACTIVAS) --- */
-          <ActiveView active={active} theme={theme} data={data} />
+          <ActiveView  active={active} theme={theme} data={data} />
         )}
       </main>
+      <BottomMobileNav display={loggedIn} isVisible={menuVisible} active={active} setActive={setActiveView} />
     </div>
   );
 }
