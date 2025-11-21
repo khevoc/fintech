@@ -121,10 +121,11 @@ const ICONS = {
   release: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14 9 11"/></svg>,
   trades: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 18V3h18"/><path d="M7 12h3"/><path d="M7 16h3"/><path d="M14 12h3"/><path d="M14 16h3"/><path d="M10 21v-3"/></svg>,
   factory: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 20a2 2 0 0 1-2 2h24a2 2 0 0 1-2-2V4a2 2 0 0 0-2-2h-8l-2 2h-4l-2-2H4a2 2 0 0 0-2 2v16z"/><path d="M8 10h8"/><path d="M8 14h8"/></svg>,
-  advance: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2.08"/><line x1="16" y1="13" x2="16" y2="17"/></svg>,
+  advance: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hand-coins-icon lucide-hand-coins"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>,
   user: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
   faq: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
-
+  bank: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-landmark-icon lucide-landmark"><path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg>,
+  
   // Actividad/Notificaciones
   releaseAction: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
   transfer: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V5a2 2 0 0 1 2-2h14a2 2 0 0 0 2 2v10"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 0-2-2v-5"/></svg>,
@@ -137,7 +138,7 @@ const ICONS = {
   // Otros iconos según sea necesario
   bell: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
   dollarSign: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-  wallet: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2.08"/><line x1="16" y1="13" x2="16" y2="17"/></svg>,
+  wallet: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet-cards-icon lucide-wallet-cards"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"/><path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21"/></svg>,
   hourglass: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22V2L7 12z"/><path d="M7 2v20L17 12z"/></svg>,
   gift: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
   partyPopper: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5.8 11.3L2 14.1l3.8 2.8L2 19.9l3.8 2.8L9.6 19.9l3.8 2.8L9.6 17.1l3.8-2.8L9.6 11.3l-3.8-2.8L2 11.3z"/><path d="M17.5 7.5l-4-4"/><path d="M19.9 14.2c-2.4 2.4-5.2 2.4-7.6 0l-4-4c-.2-.2-.2-.4 0-.6l.7-.7c.2-.2.4-.2.6 0l4 4c2.4 2.4 5.2 2.4 7.6 0l4-4c.2-.2.4-.2.6 0l.7.7c.2.2.2.4 0 .6z"/><path d="M22.5 9.5l-4-4"/><path d="M12 22a7 7 0 1 0 0-14 7 7 0 0 0 0 14z"/></svg>, // Un poco más complejo, pero ideal para celebración
@@ -154,6 +155,9 @@ const ICONS = {
   brain: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5c-3.18 0-5.77 2.45-6.61 5.61A6 6 0 0 0 12 22a7.3 7.3 0 0 0 4.09-1.28l1.41 1.41a1 1 0 0 0 1.41 0l1.41-1.41a1 1 0 0 0 0-1.41l-1.41-1.41A7.3 7.3 0 0 0 22 12a6 6 0 0 0-5.39-5.61C16.63 5 15.12 5 12 5z"/><path d="M12 5v12a5 5 0 0 0 0 10"/><path d="M16 11H8c-2.76 0-5 2.24-5 5v1"/><path d="M12 19V5a5 5 0 0 1 0-10"/><path d="M16 11H8c-2.76 0-5 2.24-5 5v1"/></svg>,
   ban: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>,
   lockClosed: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+  faceID: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-face-icon lucide-scan-face"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg>,
+  userCheck: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>,
+  scanFace: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 2a8 8 0 0 0 0 16.5"/><path d="M12 2v20"/><path d="M12 2a8 8 0 0 1 0 16.5"/><circle cx="12" cy="12" r="10"/><path d="M14 12c-2.76 0-5 2.24-5 5v1"/><path d="M12 19V5a5 5 0 0 1 0-10"/></svg>,
 
 };
 
@@ -333,7 +337,7 @@ const AccountsView = ({ accounts }) => (
     className="card" 
     style={{ minHeight: '60vh' , marginBottom: 60}}
   >
-    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.bankaccounts} Bank Accounts</h2>
+    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.bank} Bank Accounts</h2>
     <div className="table-container">
       <table>
         <thead>
@@ -748,7 +752,7 @@ const DashboardContent = ({ totalBalance, totalEscrowHeld, totalPendingLoans, ch
         <DataBox 
           title="Total Cash" 
           value={formatCurrency(totalBalance)} 
-          icon={ICONS.bankaccounts} 
+          icon={ICONS.bank} 
           color={COLORS.teal}
         />
         <DataBox 
@@ -881,7 +885,7 @@ const BottomMobileNav = ({ active, setActive, display, isVisible }) => {
 
   const navItems = [
     { id: 'dashboard', icon: ICONS.home, label: 'Home' },
-    { id: 'bankaccounts', icon: ICONS.bankaccounts, label: 'Accounts' },
+    { id: 'bankaccounts', icon: ICONS.bank, label: 'Accounts' },
     { id: 'transfer', icon: ICONS.transfer, label: 'Transfer' , action: () => alert('Initiate Transfer') },
     { id: 'faq', icon: ICONS.gift, label: 'Benefits' },
     { id: 'user', icon: ICONS.user, label: 'User' },
@@ -1472,7 +1476,7 @@ export default function ClearoApp() {
               onClick={openSection} 
               label="Bank Accounts" 
               hint="Account Balances & Transfers" 
-              icon={ICONS.bankaccounts} 
+              icon={ICONS.bank} 
             />
             <MenuItem 
               id="cards" 
@@ -1480,7 +1484,7 @@ export default function ClearoApp() {
               onClick={openSection} 
               label="Cards" 
               hint="Corporate Cards & Limits" 
-              icon={ICONS.cards} 
+              icon={ICONS.wallet} 
             />
             <MenuItem 
               id="escrow" 
@@ -1596,7 +1600,7 @@ export default function ClearoApp() {
                 onClick={handleSignIn}
                 style={{ flex: 1, height: 48, fontSize: "1.1rem" }}
               >
-                Face ID
+               {ICONS.faceID} <a style={{ margin: 8 }}>Login with Face ID</a>
               </button>
               
             </div>
