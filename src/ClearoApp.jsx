@@ -1557,6 +1557,18 @@ export default function ClearoApp() {
               >
                 New
               </button>
+
+              
+            </div>
+            <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
+              <button
+                className="btn"
+                onClick={handleSignIn}
+                style={{ flex: 1, height: 48, fontSize: "1.1rem" }}
+              >
+                Face ID
+              </button>
+              
             </div>
 
             <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid var(--border)", paddingTop: 16 }}>
