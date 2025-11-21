@@ -1165,7 +1165,7 @@ export default function ClearoApp() {
         /* Overlay (Menú) - Mejor Superposición y Efecto Blur */
         .overlay {
           position: fixed;
-          right: 20px;
+          left: 20px;
           top: 84px;
           width:340px;
           max-height: 80vh;
@@ -1274,8 +1274,6 @@ export default function ClearoApp() {
                 width: 140,
                 height: 140,
                 borderRadius: 24,
-                // Sombra de logo más pronunciada
-                // boxShadow: "0 24px 60px rgba(2,8,20,0.6)"
               }}
             />
           </motion.div>
@@ -1285,32 +1283,6 @@ export default function ClearoApp() {
       {/* --- NAVBAR (Superpuesto) --- */}
       <header className="navbar" role="banner">
         <div className="brand">
-          <motion.div
-            className="logo-pill"
-            onClick={() => setLogoTrigger((v) => v + 1)}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 400, damping: 12 }}
-          >
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={logoTrigger}
-                src={logo}
-                alt="Clearo"
-                initial={{ rotate: -180, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                style={{ width: "70%", height: "70%", objectFit: "contain", pointerEvents: "none" }}
-              />
-            </AnimatePresence>
-          </motion.div>
-
-          <div className="brand-title">
-            <div className="title">Clearo</div>
-            <div className="subtitle">Banking · Escrow · Finance Ops</div>
-          </div>
-        </div>
-
-        <div className="actions">
           {loggedIn && (
             <motion.button
               className="btn"
@@ -1326,6 +1298,12 @@ export default function ClearoApp() {
               Menu {menuOpen ? "▲" : "▼"}
             </motion.button>
           )}
+
+          
+        </div>
+
+        <div className="brand-title">
+          
 
           <motion.button
             className="btn cta"
