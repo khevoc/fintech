@@ -1275,7 +1275,7 @@ export default function ClearoApp() {
                 height: 140,
                 borderRadius: 24,
                 // Sombra de logo más pronunciada
-                boxShadow: "0 24px 60px rgba(2,8,20,0.6)"
+                // boxShadow: "0 24px 60px rgba(2,8,20,0.6)"
               }}
             />
           </motion.div>
