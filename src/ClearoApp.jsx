@@ -808,7 +808,7 @@ const DashboardContent = ({ totalBalance, totalEscrowHeld, totalPendingLoans, ch
         </div>
 
         {/* Columna Lateral: Acciones y Notificaciones */}
-        <div className="sidebar" style={{ minWidth: 320 }}>
+        <div className="sidebar" style={{ minWidth: 320, marginBottom: 60 }}>
           {/* Tarjeta de Acciones Pendientes */}
           <div className="card" style={{ marginBottom: 24 }}>
             <h3 style={{ margin: 0, marginBottom: 16, fontSize: '1.2rem', color: COLORS.statusWarning }}>{ICONS.releaseAction} Pending Actions ({pendingActions.length})</h3>
@@ -1140,7 +1140,7 @@ export default function ClearoApp() {
             left: 0;
             right: 0;
             z-index: 500;
-            background-color: var(--card-bg);
+            background-color: rgba(0, 0, 0, 0.7);
             border-top: 1px solid var(--border);
             padding: 8px 0;
             display: flex;
@@ -1241,6 +1241,7 @@ export default function ClearoApp() {
           .sidebar {
             position: sticky;
             top: 96px;
+            margin-bottom: 4rem;
           }
         }
         
