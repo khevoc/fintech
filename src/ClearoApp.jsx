@@ -233,7 +233,7 @@ const DataBox = ({ title, value, icon, color }) => (
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
     style={{
-      padding: 24, // Padding ligeramente aumentado
+      padding: 16, // Padding ligeramente aumentado
       margin: '5px',
       display: 'flex',
       flexDirection: 'column',
