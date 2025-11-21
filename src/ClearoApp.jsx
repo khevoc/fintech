@@ -112,7 +112,8 @@ const COLORS = {
 
 // --- ICONOS PROFESIONALES (Símbolos unicode) ---
 const ICONS = {
-  dashboard: '⌂', // Home
+  home: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/></svg>,
+  dashboard: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>, // Home
   bankaccounts: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><path d="M10 12l2-7 2 7"/><path d="M12 2v7"/><path d="M12 22v-7"/><path d="M16 16v-2"/><path d="M8 16v-2"/></svg>,
   cards: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>,
   loans: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 18 11 14 7 2 19"/><polyline points="18 7 22 7 22 11"/></svg>,
@@ -857,7 +858,7 @@ const DashboardContent = ({ totalBalance, totalEscrowHeld, totalPendingLoans, ch
 const BottomMobileNav = ({ active, setActive, display, isVisible }) => {
 
   const navItems = [
-    { id: 'dashboard', icon: ICONS.dashboard, label: 'Home' },
+    { id: 'dashboard', icon: ICONS.home, label: 'Home' },
     { id: 'bankaccounts', icon: ICONS.bankaccounts, label: 'Accounts' },
     { id: 'transfer', icon: ICONS.transfer, label: 'Transfer' , action: () => alert('Initiate Transfer') },
     { id: 'faq', icon: ICONS.faq, label: 'FAQ' },
