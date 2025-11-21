@@ -1484,7 +1484,7 @@ export default function ClearoApp() {
                 onClick={() => alert("Demo: password reset flow")}
                 aria-label="Forgot password"
               >
-                Forgot
+                New
               </button>
             </div>
 
