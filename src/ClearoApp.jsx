@@ -308,7 +308,7 @@ const AccountsView = ({ accounts }) => (
     exit={{ opacity: 0, x: -20 }} 
     transition={{ duration: 0.4 }}
     className="card" 
-    style={{ minHeight: '60vh' }}
+    style={{ minHeight: '60vh' , marginBottom: 60}}
   >
     <h2 style={{marginTop: 0, marginBottom: 20}}>🏦 Bank Accounts</h2>
     <div className="table-container">
@@ -349,7 +349,7 @@ const CardsView = ({ cards }) => (
     exit={{ opacity: 0, x: -20 }} 
     transition={{ duration: 0.4 }}
     className="card" 
-    style={{ minHeight: '60vh' }}
+    style={{ minHeight: '60vh', marginBottom: 60 }}
   >
     <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.cards} Card Management</h2>
     <div className="grid-3cols" style={{ marginBottom: 32 }}>
@@ -413,7 +413,7 @@ const LoansView = ({ loans }) => (
     exit={{ opacity: 0, x: -20 }} 
     transition={{ duration: 0.4 }}
     className="card" 
-    style={{ minHeight: '60vh' }}
+    style={{ minHeight: '60vh' , marginBottom: 60 }}
   >
     <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.loans} Loan Management</h2>
     <div className="grid-2cols" style={{ marginBottom: 32 }}>
@@ -471,7 +471,7 @@ const EscrowView = ({ escrows, releasePayments }) => (
     exit={{ opacity: 0, x: -20 }} 
     transition={{ duration: 0.4 }}
     className="card" 
-    style={{ minHeight: '60vh' }}
+    style={{ minHeight: '60vh' , marginBottom: 60}}
   >
     <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.escrow} Escrow Services</h2>
     <div className="grid-2cols" style={{ marginBottom: 32 }}>
@@ -528,7 +528,7 @@ const TradesView = ({ trades }) => (
     exit={{ opacity: 0, x: -20 }} 
     transition={{ duration: 0.4 }}
     className="card" 
-    style={{ minHeight: '60vh' }}
+    style={{ minHeight: '60vh' , marginBottom: 60}}
   >
     <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.trades} Trade Facilitation</h2>
     <div className="grid-3cols" style={{ marginBottom: 32 }}>
@@ -592,7 +592,7 @@ const ContractFactoryView = ({ factoryContracts }) => (
     exit={{ opacity: 0, x: -20 }} 
     transition={{ duration: 0.4 }}
     className="card" 
-    style={{ minHeight: '60vh' }}
+    style={{ minHeight: '60vh' , marginBottom: 60}}
   >
     <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.factory} Contract Factory</h2>
     <div className="grid-2cols" style={{ marginBottom: 32 }}>
@@ -648,7 +648,7 @@ const AdvanceOffersView = ({ advancePaymentOffers }) => (
     exit={{ opacity: 0, x: -20 }} 
     transition={{ duration: 0.4 }}
     className="card" 
-    style={{ minHeight: '60vh' }}
+    style={{ minHeight: '60vh' , marginBottom: 60}}
   >
     <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.advance} Advance Payment Offers</h2>
     <div className="grid-3cols" style={{ marginBottom: 32 }}>
