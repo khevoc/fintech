@@ -858,10 +858,10 @@ const BottomMobileNav = ({ active, setActive, display, isVisible }) => {
 
   const navItems = [
     { id: 'dashboard', icon: ICONS.dashboard, label: 'Home' },
-    { id: 'bankaccounts', icon: ICONS.bankaccounts, label: 'Cuentas' },
-    { id: 'transfer', icon: ICONS.transfer, label: 'Transferir', action: () => alert('Initiate Transfer') },
+    { id: 'bankaccounts', icon: ICONS.bankaccounts, label: 'Accounts' },
+    { id: 'transfer', icon: ICONS.transfer, label: 'Transfer' , action: () => alert('Initiate Transfer') },
     { id: 'faq', icon: ICONS.faq, label: 'FAQ' },
-    { id: 'user', icon: ICONS.user, label: 'Perfil' },
+    { id: 'user', icon: ICONS.user, label: 'User' },
   ];
   const visibilityClass = isVisible ? 'flex' : 'none'; 
   const handleNavClick = (item) => {
