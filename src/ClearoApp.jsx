@@ -287,7 +287,7 @@ const CustomTooltip = ({ active, payload, label, theme }) => {
       }}>
         <p className="label" style={{ fontWeight: 600, margin: 0, borderBottom: `1px solid ${border}`, paddingBottom: '8px' }}>{`Day: ${label}`}</p>
         <p className="intro" style={{ margin: '8px 0 0 0', color: COLORS.teal, fontWeight: 600 }}>{`Cash Flow: ${formatCurrency(payload[0].value * 1000)}`}</p>
-        <p className="intro" style={{ margin: '2px 0 0 0', color: COLORS.tealLight, fontWeight: 600 }}>{`Target: ${formatCurrency(payload[1].value * 1000)}`}</p>
+        <p className="intro" style={{ margin: '2px 0 0 0', color: COLORS.tealLight, fontWeight: 600 }}>{`Target: ${formatCurrency((payload[0].value/2) * 1000)}`}</p>
       </div>
     );
   }
