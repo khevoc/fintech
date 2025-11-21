@@ -1142,7 +1142,7 @@ export default function ClearoApp() {
             left: 0;
             right: 0;
             z-index: 500;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.93);
             border-top: 1px solid var(--border);
             padding: 8px 0;
             display: flex;
@@ -1509,7 +1509,7 @@ export default function ClearoApp() {
 
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 8 }}>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <div className="mini" style={{ color: "var(--muted-color)" }}>Theme:</div>
+                <div className="mini" style={{ color: "var(--muted-color)", marginBottom: 60 }}>Theme:</div>
                 <div className="seg">
                   <button className={`pill ${theme === "dark" ? "active" : ""}`} onClick={() => setTheme("dark")}>Dark</button>
                   <button className={`pill ${theme === "light" ? "active" : ""}`} onClick={() => setTheme("light")}>Light</button>
