@@ -336,6 +336,367 @@ const AccountsView = ({ accounts }) => (
   </motion.div>
 );
 
+// --- COMPONENTE VISTA: Tarjetas ---
+const CardsView = ({ cards }) => (
+  <motion.div 
+    key="cards-view" 
+    initial={{ opacity: 0, x: 20 }} 
+    animate={{ opacity: 1, x: 0 }} 
+    exit={{ opacity: 0, x: -20 }} 
+    transition={{ duration: 0.4 }}
+    className="card" 
+    style={{ minHeight: '60vh' }}
+  >
+    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.cards} Card Management</h2>
+    <div className="grid-3cols" style={{ marginBottom: 32 }}>
+      <DataBox 
+        title="Total Cards" 
+        value={cards.length.toString()} 
+        icon={ICONS.total} 
+        color={COLORS.teal}
+      />
+      <DataBox 
+        title="Corporate Credit Limit" 
+        value={formatCurrency(cards.filter(c => c.type === 'Corporate Credit').reduce((sum, c) => sum + c.limit, 0))} 
+        icon={ICONS.cards} 
+        color={COLORS.tealLight}
+      />
+      <DataBox 
+        title="Virtual Cards Locked" 
+        value={cards.filter(c => c.status === 'Locked').length.toString()} 
+        icon={'🚫'} 
+        color={COLORS.statusDanger}
+      />
+    </div>
+
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Holder</th>
+            <th>Type</th>
+            <th>Limit</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cards.map((card) => (
+            <motion.tr key={card.id} whileHover={{ backgroundColor: 'var(--hover-bg-subtle)' }}>
+              <td>{card.id}</td>
+              <td>{card.holder}</td>
+              <td>{card.type}</td>
+              <td>{card.limit > 0 ? formatCurrency(card.limit) : 'N/A'}</td>
+              <td>
+                <span className={`status-pill ${card.status.toLowerCase().replace(' ', '')}`}>{card.status}</span>
+              </td>
+              <td><button className="btn mini" onClick={() => alert(`View ${card.id}`)}>View</button></td>
+            </motion.tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </motion.div>
+);
+
+// --- COMPONENTE VISTA: Préstamos ---
+const LoansView = ({ loans }) => (
+  <motion.div 
+    key="loans-view" 
+    initial={{ opacity: 0, x: 20 }} 
+    animate={{ opacity: 1, x: 0 }} 
+    exit={{ opacity: 0, x: -20 }} 
+    transition={{ duration: 0.4 }}
+    className="card" 
+    style={{ minHeight: '60vh' }}
+  >
+    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.loans} Loan Management</h2>
+    <div className="grid-2cols" style={{ marginBottom: 32 }}>
+      <DataBox 
+        title="Active Loan Capital" 
+        value={formatCurrency(loans.filter(l => l.status === 'Active').reduce((sum, l) => sum + l.amount, 0))} 
+        icon={'💵'} 
+        color={COLORS.teal}
+      />
+      <DataBox 
+        title="Pending Loan Applications" 
+        value={loans.filter(l => l.status === 'Pending').length.toString()} 
+        icon={'⏳'} 
+        color={COLORS.statusWarning}
+      />
+    </div>
+
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Borrower</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Rate</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {loans.map((loan) => (
+            <motion.tr key={loan.id} whileHover={{ backgroundColor: 'var(--hover-bg-subtle)' }}>
+              <td>{loan.id}</td>
+              <td>{loan.borrower}</td>
+              <td>{formatCurrency(loan.amount)}</td>
+              <td>{loan.type}</td>
+              <td>{loan.rate}</td>
+              <td>
+                <span className={`status-pill ${loan.status.toLowerCase().replace(' ', '')}`}>{loan.status}</span>
+              </td>
+            </motion.tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </motion.div>
+);
+
+// --- COMPONENTE VISTA: Escrows (Fideicomisos) ---
+const EscrowView = ({ escrows, releasePayments }) => (
+  <motion.div 
+    key="escrow-view" 
+    initial={{ opacity: 0, x: 20 }} 
+    animate={{ opacity: 1, x: 0 }} 
+    exit={{ opacity: 0, x: -20 }} 
+    transition={{ duration: 0.4 }}
+    className="card" 
+    style={{ minHeight: '60vh' }}
+  >
+    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.escrow} Escrow Services</h2>
+    <div className="grid-2cols" style={{ marginBottom: 32 }}>
+      <DataBox 
+        title="Total Held in Escrow" 
+        value={formatCurrency(escrows.reduce((sum, e) => sum + e.amount, 0))} 
+        icon={ICONS.escrow} 
+        color={COLORS.teal}
+      />
+      <DataBox 
+        title="Pending Releases" 
+        value={releasePayments.filter(r => r.status.includes('Approval') || r.status.includes('Pending')).length.toString()} 
+        icon={ICONS.releaseAction} 
+        color={COLORS.statusWarning}
+      />
+    </div>
+
+    <h3>Active Escrows</h3>
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Parties</th>
+            <th>Object</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {escrows.map((esc) => (
+            <motion.tr key={esc.id} whileHover={{ backgroundColor: 'var(--hover-bg-subtle)' }}>
+              <td>{esc.id}</td>
+              <td>{esc.parties}</td>
+              <td>{esc.object}</td>
+              <td>{formatCurrency(esc.amount)}</td>
+              <td>
+                <span className={`status-pill ${esc.status.toLowerCase().replace(' ', '')}`}>{esc.status}</span>
+              </td>
+            </motion.tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </motion.div>
+);
+
+// --- COMPONENTE VISTA: Trades (Operaciones) ---
+const TradesView = ({ trades }) => (
+  <motion.div 
+    key="trades-view" 
+    initial={{ opacity: 0, x: 20 }} 
+    animate={{ opacity: 1, x: 0 }} 
+    exit={{ opacity: 0, x: -20 }} 
+    transition={{ duration: 0.4 }}
+    className="card" 
+    style={{ minHeight: '60vh' }}
+  >
+    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.trades} Trade Facilitation</h2>
+    <div className="grid-3cols" style={{ marginBottom: 32 }}>
+      <DataBox 
+        title="Total Value (Complete)" 
+        value={formatCurrency(trades.filter(t => t.status === 'Complete').reduce((sum, t) => sum + t.amount, 0))} 
+        icon={'🎉'} 
+        color={COLORS.tealLight}
+      />
+      <DataBox 
+        title="Pending Negotiations" 
+        value={trades.filter(t => t.status === 'Negotiation').length.toString()} 
+        icon={'🤝'} 
+        color={COLORS.statusWarning}
+      />
+      <DataBox 
+        title="Drafts" 
+        value={trades.filter(t => t.status === 'Draft').length.toString()} 
+        icon={'📄'} 
+        color={COLORS.accentSecondary}
+      />
+    </div>
+
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Role</th>
+            <th>Object</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {trades.map((trade) => (
+            <motion.tr key={trade.id} whileHover={{ backgroundColor: 'var(--hover-bg-subtle)' }}>
+              <td>{trade.id}</td>
+              <td>{trade.type}</td>
+              <td>{trade.object}</td>
+              <td>{formatCurrency(trade.amount)}</td>
+              <td>
+                <span className={`status-pill ${trade.status.toLowerCase().replace(' ', '')}`}>{trade.status}</span>
+              </td>
+              <td><button className="btn mini" onClick={() => alert(`Review ${trade.id}`)}>Review</button></td>
+            </motion.tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </motion.div>
+);
+
+// --- COMPONENTE VISTA: Contract Factory ---
+const ContractFactoryView = ({ factoryContracts }) => (
+  <motion.div 
+    key="factory-view" 
+    initial={{ opacity: 0, x: 20 }} 
+    animate={{ opacity: 1, x: 0 }} 
+    exit={{ opacity: 0, x: -20 }} 
+    transition={{ duration: 0.4 }}
+    className="card" 
+    style={{ minHeight: '60vh' }}
+  >
+    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.factory} Contract Factory</h2>
+    <div className="grid-2cols" style={{ marginBottom: 32 }}>
+      <DataBox 
+        title="Total Active Factories" 
+        value={factoryContracts.filter(f => f.status === 'Active').length.toString()} 
+        icon={'🤖'} 
+        color={COLORS.teal}
+      />
+      <DataBox 
+        title="Total Managed Assets" 
+        value={factoryContracts.reduce((sum, f) => sum + f.assets, 0).toLocaleString()} 
+        icon={'📦'} 
+        color={COLORS.tealLight}
+      />
+    </div>
+
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Assets</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {factoryContracts.map((contract) => (
+            <motion.tr key={contract.id} whileHover={{ backgroundColor: 'var(--hover-bg-subtle)' }}>
+              <td>{contract.id}</td>
+              <td>{contract.title}</td>
+              <td>
+                <span className={`status-pill ${contract.status.toLowerCase().replace(' ', '')}`}>{contract.status}</span>
+              </td>
+              <td>{contract.assets.toLocaleString()}</td>
+              <td><button className="btn mini cta" onClick={() => alert(`Manage ${contract.id}`)}>Manage</button></td>
+            </motion.tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </motion.div>
+);
+
+// --- COMPONENTE VISTA: Advance Payment Offers ---
+const AdvanceOffersView = ({ advancePaymentOffers }) => (
+  <motion.div 
+    key="advance-view" 
+    initial={{ opacity: 0, x: 20 }} 
+    animate={{ opacity: 1, x: 0 }} 
+    exit={{ opacity: 0, x: -20 }} 
+    transition={{ duration: 0.4 }}
+    className="card" 
+    style={{ minHeight: '60vh' }}
+  >
+    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.advance} Advance Payment Offers</h2>
+    <div className="grid-3cols" style={{ marginBottom: 32 }}>
+      <DataBox 
+        title="Total Offer Value" 
+        value={formatCurrency(advancePaymentOffers.reduce((sum, o) => sum + o.amount, 0))} 
+        icon={'💵'} 
+        color={COLORS.teal}
+      />
+      <DataBox 
+        title="Max Potential Discount" 
+        value={formatCurrency(advancePaymentOffers.reduce((sum, o) => sum + (o.amount * o.discountPct / 100), 0), 'USD')} 
+        icon={'📉'} 
+        color={COLORS.tealLight}
+      />
+      <DataBox 
+        title="Offers Available" 
+        value={advancePaymentOffers.length.toString()} 
+        icon={'🏷️'} 
+        color={COLORS.statusWarning}
+      />
+    </div>
+
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Discount</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {advancePaymentOffers.map((offer) => (
+            <motion.tr key={offer.id} whileHover={{ backgroundColor: 'var(--hover-bg-subtle)' }}>
+              <td>{offer.id}</td>
+              <td>{offer.description}</td>
+              <td><span className="pill dark-text">{offer.discountPct}%</span></td>
+              <td>{formatCurrency(offer.amount)}</td>
+              <td>{offer.due}</td>
+              <td><button className="btn mini cta" onClick={() => alert(`Accept Offer ${offer.id}`)}>Accept</button></td>
+            </motion.tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </motion.div>
+);
+
 // --- COMPONENTE DASHBOARD (Contenido principal) ---
 const DashboardContent = ({ totalBalance, totalEscrowHeld, totalPendingLoans, chartData, theme, currentChartType, setCurrentChartType, notifications, pendingActions }) => {
   const isDark = theme === 'dark';
@@ -495,12 +856,12 @@ const ActiveView = ({ active, theme, data }) => {
     dashboard: <DashboardContent {...data} theme={theme} />,
     bankaccounts: <AccountsView accounts={data.bankAccounts} />,
     // Añade más vistas aquí
-    cards: <h2 className="card" style={{ padding: 40 }}>💳 Cards Management View (WIP)</h2>,
-    loans: <h2 className="card" style={{ padding: 40 }}>📈 Loan Management View (WIP)</h2>,
-    escrow: <h2 className="card" style={{ padding: 40 }}>🔒 Escrow Services View (WIP)</h2>,
-    trades: <h2 className="card" style={{ padding: 40 }}>🏘️ Trade Facilitation View (WIP)</h2>,
-    factory: <h2 className="card" style={{ padding: 40 }}>🏭 Contract Factory View (WIP)</h2>,
-    advance: <h2 className="card" style={{ padding: 40 }}>💰 Advance Payment Offers View (WIP)</h2>,
+    cards: <CardsView cards={data.cards} />,
+    loans: <LoansView loans={data.loans} />,
+    escrow: <EscrowView escrows={data.escrows} releasePayments={data.releasePayments} />,
+    trades: <TradesView trades={data.trades} />,
+    factory: <ContractFactoryView factoryContracts={data.factoryContracts} />,
+    advance: <AdvanceOffersView advancePaymentOffers={data.advancePaymentOffers} />,
   };
 
   return (
