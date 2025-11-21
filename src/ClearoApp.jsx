@@ -9,8 +9,518 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+
+// NOTA: Se asume que /logo.png existe
 import logo from "/logo.png";
 
+// --- DATOS DE PRUEBA AMPLIADOS ---
+const initialChartData = [
+  { day: "Mon", value: 125.0, pv: 140.0, amt: 2400 },
+  { day: "Tue", value: 129.5, pv: 135.0, amt: 2210 },
+  { day: "Wed", value: 127.2, pv: 142.0, amt: 2290 },
+  { day: "Thu", value: 131.8, pv: 145.0, amt: 2000 },
+  { day: "Fri", value: 134.4, pv: 148.0, amt: 2181 },
+  { day: "Sat", wvalue: 136.2, pv: 152.0, amt: 2500 },
+  { day: "Sun", value: 139.8, pv: 158.0, amt: 2100 },
+];
+
+const initialBankAccounts = [
+  { id: "CL-001", name: "Operating - Clearo Bank", balance: 125400.0, currency: "USD", status: "Active" },
+  { id: "CL-002", name: "Reserve - Global Trust", balance: 54000.0, currency: "USD", status: "Active" },
+  { id: "CL-003", name: "Payroll - CitiBank NA", balance: 12500.5, currency: "USD", status: "Verified" },
+  { id: "CL-004", name: "EUR Main - Deutsche", balance: 45000.0, currency: "EUR", status: "Active" },
+];
+
+const initialCards = [
+  { id: "CARD-01", holder: "Clearo Corporate", type: "Debit", limit: 0, status: "Active" },
+  { id: "CARD-02", holder: "Vendor Card", type: "Corporate Credit", limit: 50000, status: "Active" },
+  { id: "CARD-03", holder: "Marketing Spend", type: "Virtual Debit", limit: 5000, status: "Locked" },
+];
+
+const initialLoans = [
+  { id: "LN-1001", borrower: "Acme Real Estate", amount: 250000, type: "Commercial Mortgage", rate: "4.5%", status: "Active" },
+  { id: "LN-1002", borrower: "GreenBuild Ltd.", amount: 120000, type: "Working Capital", rate: "7.2%", status: "Pending" },
+  { id: "LN-1003", borrower: "Tech Startup Inc.", amount: 80000, type: "Convertible Note", rate: "N/A", status: "Funded" },
+];
+
+const initialEscrows = [
+  { id: "ESC-9001", parties: "Seller A ↔ Buyer B", object: "Apartment 12B", amount: 245000, status: "Held" },
+  { id: "ESC-9002", parties: "Contractor ↔ Client Z", object: "Software Dev. Milestone 1", amount: 15000, status: "Released" },
+  { id: "ESC-9003", parties: "Fund C ↔ Asset D", object: "Security Token Sale", amount: 1000000, status: "Pending Deposit" },
+];
+
+const initialTrades = [
+  { id: "TR-3001", type: "Seller", object: "Apartment 12B", amount: 185000, status: "Draft" },
+  { id: "TR-3002", type: "Buyer", object: "Warehouse #7", amount: 420000, status: "Negotiation" },
+  { id: "TR-3003", type: "Seller", object: "Land Parcel Z", amount: 95000, status: "Complete" },
+];
+
+const initialFactoryContracts = [
+  { id: "FAC-01", title: "Mortgage Pool Factory", status: "Active", assets: 450 },
+  { id: "FAC-02", title: "Securitized Receivables", status: "Setup", assets: 0 },
+];
+
+const initialAdvancePaymentOffers = [
+  { id: "ADV-1", description: "2% discount for settlement within 7 days (Invoice #456)", discountPct: 2, amount: 12500, due: "2025-12-01" },
+  { id: "ADV-2", description: "5% early pay discount (Vendor A, Q4 Contracts)", discountPct: 5, amount: 45000, due: "2026-01-15" },
+];
+
+const initialReleasePayments = [
+  { id: "REL-101", from: "Buyer B", to: "Seller A", amount: 12000, status: "Awaiting Approval", esc: "ESC-9001" },
+  { id: "REL-102", from: "Client Z", to: "Contractor", amount: 5000, status: "Pending Release", esc: "ESC-9002" },
+];
+
+// Datos de Notificaciones y Actividad (Mejorados)
+const initialNotifications = [
+  { id: 1, type: 'release', title: 'Payment Approval Required', detail: 'Release $12,000 for Escrow ESC-9001', time: '5m ago' },
+  { id: 2, type: 'transfer', title: 'Transfer Complete', detail: 'Received $25,000 from Acme Corp.', time: '1h ago' },
+  { id: 3, type: 'account', title: 'Account Verified', detail: 'Payroll - CitiBank NA account confirmed.', time: '3h ago' },
+  { id: 4, type: 'alert', title: 'Card Limit Reached', detail: 'Marketing Spend Card is at 98% usage.', time: '1d ago' },
+];
+
+const initialPendingActions = [
+  { id: 'appr-1', type: 'release', title: 'Escrow Release', detail: 'Approve $12,000 to Seller A', targetId: 'REL-101' },
+  { id: 'appr-2', type: 'contract', title: 'Finalize Contract', detail: 'Review Mortgage Pool Factory setup', targetId: 'FAC-02' },
+  { id: 'appr-3', type: 'advance', title: 'Advance Offer', detail: 'Accept 2% discount on Invoice #456', targetId: 'ADV-1' },
+];
+
+
+// --- COLORES MEJORADOS Y PROFESIONALES ---
+const COLORS = {
+  // Base Corporativo (Dark Theme)
+  deepBlue: "#0B111A", // Fondo oscuro (más profundo)
+  cardDark: "#1A2433", // Fondo tarjeta oscuro (más contraste y elegancia)
+
+  // Accent Principal (Azul Zafiro, profesional y de confianza)
+  teal: "#007AFF", // Azul profesional, similar a iOS/SaaS
+  tealLight: "#34C759", // Verde/Cyan para contrastes
+
+  // Light Theme (Paleta limpia y formal)
+  lightBg: "#FFFFFF", // Fondo claro limpio
+  cardLight: "#F8FAFC", // Fondo tarjeta light (un toque de contraste)
+  textDark: "#1F2937", // Texto oscuro (gris oscuro, no negro puro)
+  lightBorder: "#E5E7EB", // Borde claro suave
+
+  // Colores de estado y utilidad
+  statusSuccess: "#34C759", // Éxito (Verde Apple)
+  statusWarning: "#FF9500", // Advertencia (Naranja)
+  statusDanger: "#FF3B30", // Peligro (Rojo)
+  accentSecondary: "#4B5563", // Color secundario para detalles/ejes
+  textLight: "#F8F9FA", // Texto claro
+};
+
+// --- ICONOS PROFESIONALES (Símbolos unicode) ---
+const ICONS = {
+  dashboard: '⌂', // Home
+  bankaccounts: '🏦',
+  cards: '💳',
+  loans: '📈',
+  escrow: '🔒',
+  release: '✅',
+  trades: '🏘️',
+  factory: '🏭',
+  advance: '💰',
+  user: '👤',
+
+  // Actividad/Notificaciones
+  releaseAction: '✍️',
+  transfer: '💸',
+  account: '✔',
+  alert: '⚠️',
+  contract: '📜',
+  cashflow: '📊',
+  total: 'Σ',
+};
+
+// --- UTILIDADES ---
+const formatCurrency = (amount, currency = 'USD') => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount);
+};
+const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+
+// --- COMPONENTE MENU ITEM (Optimizado con Iconos y Corrección de Animación) ---
+const MenuItem = ({ id, active, onClick, label, hint, icon }) => {
+  const isActive = active === id;
+  // CAMBIO CLAVE: Usar un color transparente #00000000 para inicialización
+  const initialBg = isActive ? "var(--teal-light-alpha)" : "#00000000"; 
+  const hoverBg = isActive ? "var(--teal-light-alpha-hover)" : "var(--hover-bg)";
+  const activeBorder = isActive ? `1px solid ${COLORS.teal}` : "1px solid transparent";
+  const activeColor = isActive ? COLORS.teal : "inherit";
+
+  return (
+    <motion.div
+      className="menu-item"
+      role="menuitem"
+      tabIndex={0}
+      onClick={() => onClick(id)}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') onClick(id);
+      }}
+      // transition mejorada (spring) para un toque más profesional
+      transition={{ type: "spring", stiffness: 400, damping: 25 }} 
+      // background se define en initial y whileHover para la animación
+      initial={{ backgroundColor: initialBg }} 
+      whileHover={{ backgroundColor: hoverBg, x: 4 }} // Efecto de deslizamiento moderno
+      style={{
+        border: activeBorder,
+        color: activeColor,
+      }}
+    >
+      <div style={{ fontWeight: 600, fontSize: "1.05rem", display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ fontSize: "1.2rem" }}>{icon}</span> {label}
+      </div>
+      <div className="tiny" style={{ opacity: 0.7, color: isActive ? COLORS.teal : "var(--muted-color)" }}>{hint}</div>
+    </motion.div>
+  );
+};
+
+
+// --- COMPONENTE NOTIFICACIÓN / ACCIÓN PENDIENTE (Optimizado) ---
+const ActivityItem = ({ type, title, detail, time, onClick, statusColor, actionIcon }) => {
+
+  const icon = actionIcon || ICONS[type] || 'ⓘ'; // Icono por defecto
+
+  let color = statusColor || COLORS.accentSecondary;
+  if (type === 'release' || type === 'contract' || type === 'advance') color = COLORS.statusWarning;
+  if (type === 'transfer' || type === 'account') color = COLORS.statusSuccess;
+  if (type === 'alert') color = COLORS.statusDanger;
+
+  const iconStyle = {
+    fontSize: "1.3rem",
+    color: color,
+    minWidth: '24px',
+    textAlign: 'center'
+  };
+
+  return (
+    <motion.div
+      className="activity-item"
+      onClick={onClick}
+      // Efecto de brillo/glow en hover para profesionalismo
+      whileHover={{ scale: 1.02, backgroundColor: 'var(--hover-bg-subtle)', boxShadow: '0 4px 15px rgba(0, 122, 255, 0.1)' }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "12px 0", // Más espacio vertical
+        borderBottom: "1px solid var(--border)",
+        cursor: "pointer",
+        transition: "background 0.2s ease"
+      }}
+    >
+      <div style={iconStyle}>{icon}</div>
+      <div style={{ flex: 1 }}>
+        <div style={{ fontWeight: 600, fontSize: "0.95rem" }}>{title}</div>
+        <div className="tiny muted" style={{ marginTop: 2, opacity: 0.8 }}>{detail}</div>
+      </div>
+      {time && <div className="tiny muted" style={{ minWidth: 40, textAlign: 'right', opacity: 0.6 }}>{time}</div>}
+    </motion.div>
+  );
+};
+
+// --- NUEVO COMPONENTE: DataBox para Métricas Clave ---
+const DataBox = ({ title, value, icon, color }) => (
+  <motion.div
+    className="card data-box"
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    style={{
+      padding: 24, // Padding ligeramente aumentado
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      height: '100%',
+      boxShadow: 'none', 
+      border: '1px solid var(--border)',
+      position: 'relative',
+      overflow: 'hidden',
+      cursor: 'default' // Indicador de que no es clickeable (a menos que se añada onClick)
+    }}
+    whileHover={{ 
+      boxShadow: `0 4px 20px ${color.replace(')', ', 0.25)')}`, // Sombra más notoria
+      borderColor: color,
+      transform: 'translateY(-3px)' // Desplazamiento sutil
+    }}
+    transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] , type: "spring", stiffness: 300, damping: 25 }}
+  >
+    <div className="mini" style={{ color: color, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.8 }}>{title}</div>
+    <div style={{ fontSize: '2.4rem', fontWeight: 700, marginTop: 4, display: 'flex', alignItems: 'flex-end', gap: 8, lineHeight: 1.2 }}>
+      {value}
+    </div>
+    <div style={{
+      position: 'absolute',
+      right: 20,
+      top: 20,
+      fontSize: '2.8rem', // Icono más grande
+      opacity: 0.1, // Opacidad más sutil
+      color: color,
+      transform: 'rotate(-10deg)',
+      pointerEvents: 'none'
+    }}>{icon}</div>
+  </motion.div>
+);
+
+// --- COMPONENTE Tooltip Personalizado para el Gráfico ---
+const CustomTooltip = ({ active, payload, label, theme }) => {
+  if (active && payload && payload.length) {
+    const isDark = theme === 'dark';
+    const bg = isDark ? COLORS.cardDark : COLORS.cardLight;
+    const border = isDark ? 'rgba(255,255,255,0.15)' : COLORS.lightBorder;
+    
+    return (
+      <div className="custom-tooltip" style={{
+        backgroundColor: bg,
+        padding: '12px',
+        border: `1px solid ${border}`,
+        borderRadius: '10px',
+        boxShadow: isDark ? '0 4px 15px rgba(0,0,0,0.5)' : '0 4px 15px rgba(0,0,0,0.1)',
+        fontSize: '0.9rem',
+        minWidth: 150,
+      }}>
+        <p className="label" style={{ fontWeight: 600, margin: 0, borderBottom: `1px solid ${border}`, paddingBottom: '8px' }}>{`Day: ${label}`}</p>
+        <p className="intro" style={{ margin: '8px 0 0 0', color: COLORS.teal, fontWeight: 600 }}>{`Cash Flow: ${formatCurrency(payload[0].value * 1000)}`}</p>
+        <p className="intro" style={{ margin: '2px 0 0 0', color: COLORS.tealLight, fontWeight: 600 }}>{`Target: ${formatCurrency(payload[1].value * 1000)}`}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+// --- COMPONENTE VISTA: Cuentas Bancarias ---
+const AccountsView = ({ accounts }) => (
+  <motion.div 
+    key="accounts-view" 
+    initial={{ opacity: 0, x: 20 }} 
+    animate={{ opacity: 1, x: 0 }} 
+    exit={{ opacity: 0, x: -20 }} 
+    transition={{ duration: 0.4 }}
+    className="card" 
+    style={{ minHeight: '60vh' }}
+  >
+    <h2 style={{marginTop: 0, marginBottom: 20}}>🏦 Bank Accounts</h2>
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Balance (USD)</th>
+            <th>Currency</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {accounts.map((acc) => (
+            <motion.tr key={acc.id} whileHover={{ backgroundColor: 'var(--hover-bg-subtle)' }}>
+              <td>{acc.id}</td>
+              <td>{acc.name}</td>
+              <td>{formatCurrency(acc.balance, 'USD')}</td>
+              <td>{acc.currency}</td>
+              <td>
+                <span className={`status-pill ${acc.status.toLowerCase().replace(' ', '')}`}>{acc.status}</span>
+              </td>
+            </motion.tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </motion.div>
+);
+
+// --- COMPONENTE DASHBOARD (Contenido principal) ---
+const DashboardContent = ({ totalBalance, totalEscrowHeld, totalPendingLoans, chartData, theme, currentChartType, setCurrentChartType, notifications, pendingActions }) => {
+  const isDark = theme === 'dark';
+  const axisColor = isDark ? 'rgba(255,255,255,0.4)' : COLORS.accentSecondary;
+  const gridColor = isDark ? 'rgba(255,255,255,0.05)' : COLORS.lightBorder;
+  const textFill = isDark ? COLORS.textLight : COLORS.textDark;
+
+  return (
+    <motion.div 
+      key="dashboard-view" 
+      initial={{ opacity: 0, y: 20 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      exit={{ opacity: 0, y: -20 }} 
+      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }} 
+      style={{ animationDelay: '0.1s' }}
+    >
+      <h1 style={{marginTop: 0, fontWeight: 800, fontSize: '2.5rem'}}>Welcome back, Clearo!</h1>
+      <p className="muted" style={{marginBottom: 32}}>A high-level overview of your finance operations.</p>
+      
+      {/* Métrica Global Grid */}
+      <div className="grid-3cols" style={{marginBottom: 32}}>
+        <DataBox 
+          title="Total Cash" 
+          value={formatCurrency(totalBalance)} 
+          icon={ICONS.bankaccounts} 
+          color={COLORS.teal}
+        />
+        <DataBox 
+          title="Escrow Held" 
+          value={formatCurrency(totalEscrowHeld)} 
+          icon={ICONS.escrow} 
+          color={COLORS.statusWarning}
+        />
+        <DataBox 
+          title="Pending Loan Capital" 
+          value={formatCurrency(totalPendingLoans)} 
+          icon={ICONS.loans} 
+          color={COLORS.tealLight}
+        />
+      </div>
+
+      {/* Gráfico y Actividad Grid */}
+      <div className="grid">
+        {/* Columna Principal: Gráfico de Cash Flow */}
+        <div className="card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <h2 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>{ICONS.cashflow} Cash Flow & Projections</h2>
+            <div className="seg">
+              <button 
+                className={`pill ${currentChartType === "cashflow" ? "active" : ""}`} 
+                onClick={() => setCurrentChartType("cashflow")}
+              >
+                Cash Flow
+              </button>
+              <button 
+                className={`pill ${currentChartType === "volume" ? "active" : ""}`} 
+                onClick={() => setCurrentChartType("volume")}
+              >
+                Volume
+              </button>
+            </div>
+          </div>
+
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart
+              data={chartData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+            >
+              <CartesianGrid stroke={gridColor} strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="day" stroke={axisColor} tickLine={false} axisLine={{ stroke: axisColor }} />
+              <YAxis 
+                stroke={axisColor} 
+                tickLine={false} 
+                axisLine={{ stroke: axisColor }}
+                tickFormatter={(value) => `$${value}k`}
+              />
+              <Tooltip content={<CustomTooltip theme={theme} />} />
+              
+              {/* Línea Principal (Más gruesa y animada) */}
+              <Line 
+                type="monotone" 
+                dataKey="value" 
+                stroke={COLORS.teal} 
+                strokeWidth={3} 
+                dot={{ stroke: COLORS.teal, strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6 }}
+                name="Cash Flow"
+                // Animación de entrada
+                initial={{ opacity: 0, pathLength: 0 }}
+                animate={{ opacity: 1, pathLength: 1 }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+              />
+              {/* Línea Secundaria/Target (Sutil y punteada) */}
+              <Line 
+                type="monotone" 
+                dataKey="pv" 
+                stroke={COLORS.tealLight} 
+                strokeWidth={2} 
+                dot={false}
+                strokeDasharray="5 5"
+                opacity={0.6}
+                name="Target/Projection"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Columna Lateral: Acciones y Notificaciones */}
+        <div className="sidebar" style={{ minWidth: 320 }}>
+          {/* Tarjeta de Acciones Pendientes */}
+          <div className="card" style={{ marginBottom: 24 }}>
+            <h3 style={{ margin: 0, marginBottom: 16, fontSize: '1.2rem', color: COLORS.statusWarning }}>{ICONS.releaseAction} Pending Actions ({pendingActions.length})</h3>
+            <div style={{ padding: '0 8px' }}>
+              {pendingActions.map((action) => (
+                <ActivityItem
+                  key={action.id}
+                  type={action.type}
+                  title={action.title}
+                  detail={action.detail}
+                  actionIcon={ICONS.releaseAction}
+                  onClick={() => alert(`Navigating to: ${action.title}`)}
+                  statusColor={COLORS.statusWarning}
+                />
+              ))}
+              {pendingActions.length === 0 && <div className="muted">No pending actions required.</div>}
+            </div>
+            <button className="btn" style={{ width: '100%', marginTop: 16 }}>View All Actions</button>
+          </div>
+
+          {/* Tarjeta de Notificaciones */}
+          <div className="card">
+            <h3 style={{ margin: 0, marginBottom: 16, fontSize: '1.2rem' }}>🔔 Latest Activity</h3>
+            <div style={{ padding: '0 8px' }}>
+              {notifications.map((notif) => (
+                <ActivityItem
+                  key={notif.id}
+                  type={notif.type}
+                  title={notif.title}
+                  detail={notif.detail}
+                  time={notif.time}
+                  onClick={() => alert(`Viewing: ${notif.title}`)}
+                />
+              ))}
+            </div>
+            <button className="btn" style={{ width: '100%', marginTop: 16 }}>View History</button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+
+// --- COMPONENTE CONTENEDOR DE VISTAS ---
+const ActiveView = ({ active, theme, data }) => {
+  const viewMap = {
+    dashboard: <DashboardContent {...data} theme={theme} />,
+    bankaccounts: <AccountsView accounts={data.bankAccounts} />,
+    // Añade más vistas aquí
+    cards: <h2 className="card" style={{ padding: 40 }}>💳 Cards Management View (WIP)</h2>,
+    loans: <h2 className="card" style={{ padding: 40 }}>📈 Loan Management View (WIP)</h2>,
+    escrow: <h2 className="card" style={{ padding: 40 }}>🔒 Escrow Services View (WIP)</h2>,
+    trades: <h2 className="card" style={{ padding: 40 }}>🏘️ Trade Facilitation View (WIP)</h2>,
+    factory: <h2 className="card" style={{ padding: 40 }}>🏭 Contract Factory View (WIP)</h2>,
+    advance: <h2 className="card" style={{ padding: 40 }}>💰 Advance Payment Offers View (WIP)</h2>,
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      {/* Key es crucial para que AnimatePresence detecte el cambio y aplique la transición */}
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
+        {viewMap[active] || <div className="card" style={{ padding: 40 }}><h2 style={{ margin: 0 }}>View Not Found: {capitalize(active)}</h2></div>}
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+
+// --- COMPONENTE PRINCIPAL ---
 export default function ClearoApp() {
   const [theme, setTheme] = useState("dark");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,56 +529,30 @@ export default function ClearoApp() {
 
   const [animatingLogin, setAnimatingLogin] = useState(false);
   const [logoTrigger, setLogoTrigger] = useState(0);
+  const [currentChartType, setCurrentChartType] = useState('cashflow');
 
-  const chartData = [
-    { day: "Mon", value: 125000 },
-    { day: "Tue", value: 129500 },
-    { day: "Wed", value: 127200 },
-    { day: "Thu", value: 131800 },
-    { day: "Fri", value: 134400 },
-  ];
+  // --- DATA ---
+  const data = {
+    chartData: initialChartData,
+    bankAccounts: initialBankAccounts,
+    notifications: initialNotifications,
+    pendingActions: initialPendingActions,
+    escrows: initialEscrows,
+    loans: initialLoans,
+    cards: initialCards,
+    trades: initialTrades,
+    factoryContracts: initialFactoryContracts,
+    advancePaymentOffers: initialAdvancePaymentOffers,
+    releasePayments: initialReleasePayments,
+    // Cálculos de métricas
+    totalBalance: initialBankAccounts.reduce((sum, acc) => sum + (acc.currency === 'USD' ? acc.balance : 0), 0),
+    totalEscrowHeld: initialEscrows.filter(e => e.status === 'Held').reduce((sum, e) => sum + e.amount, 0),
+    totalPendingLoans: initialLoans.filter(l => l.status === 'Pending').reduce((sum, l) => sum + l.amount, 0),
+    currentChartType: currentChartType,
+    setCurrentChartType: setCurrentChartType,
+  }
 
-  const bankAccounts = [
-    { id: "CL-001", name: "Operating - Clearo Bank", balance: 125400, currency: "USD" },
-    { id: "CL-002", name: "Reserve - Global Trust", balance: 54000, currency: "USD" },
-  ];
-
-  const cards = [
-    { id: "CARD-01", holder: "Clearo Corporate", type: "Debit", limit: 0 },
-    { id: "CARD-02", holder: "Vendor Card", type: "Corporate Credit", limit: 50000 },
-  ];
-
-  const loans = [
-    { id: "LN-1001", borrower: "Acme Real Estate", amount: 250000, status: "Active" },
-    { id: "LN-1002", borrower: "GreenBuild Ltd.", amount: 120000, status: "Pending" },
-  ];
-
-  const escrows = [
-    { id: "ESC-9001", parties: "Seller A ↔ Buyer B", amount: 245000, status: "Held" },
-  ];
-
-  const trades = [
-    { id: "TR-3001", type: "Seller", object: "Apartment 12B", amount: 185000, status: "Draft" },
-    { id: "TR-3002", type: "Buyer", object: "Warehouse #7", amount: 420000, status: "Negotiation" },
-  ];
-
-  const factoryContracts = [{ id: "FAC-01", title: "Mortgage Pool Factory", status: "Active" }];
-
-  const advancePaymentOffers = [
-    { id: "ADV-1", description: "2% discount for settlement within 7 days", discountPct: 2 },
-  ];
-
-  const COLORS = {
-    deepBlue: "#05264A",
-    teal: "#16A085",
-    lightGray: "#F2F4F6",
-    darkBg: "#081018",
-    cardDark: "#0f1316",
-    textLight: "#F3F6F8",
-    textDark: "#0b1220",
-    accentWarn: "#ff692e",
-  };
-
+  // --- LÓGICA DE ESTADO Y HANDLERS ---
   const openSection = (id) => {
     setActive(id);
     setMenuOpen(false);
@@ -81,13 +565,16 @@ export default function ClearoApp() {
       setAnimatingLogin(false);
       setLoggedIn(true);
       setActive("dashboard");
-    }, 2000);
+    }, 900); // Transición más rápida y moderna
   };
 
-  const rootBg = theme === "dark" ? COLORS.darkBg : COLORS.lightGray;
+  // Lógica de tema para variables de CSS
+  const rootBg = theme === "dark" ? COLORS.deepBlue : COLORS.lightBg;
   const textColor = theme === "dark" ? COLORS.textLight : COLORS.textDark;
-  const cardBg = theme === "dark" ? COLORS.cardDark : "#ffffff";
-  const borderColor = theme === "dark" ? "rgba(255,255,255,0.04)" : "#e8eef5";
+  const cardBg = theme === "dark" ? COLORS.cardDark : COLORS.cardLight;
+  const borderColor = theme === "dark" ? "rgba(255,255,255,0.08)" : COLORS.lightBorder;
+  const textActiveColor = theme === "dark" ? COLORS.textLight : COLORS.deepBlue;
+
 
   const emailRef = useRef(null);
 
@@ -97,34 +584,53 @@ export default function ClearoApp() {
     }
   }, [loggedIn]);
 
+  // --- EFECTO DE PARTÍCULAS (Canvas) - EL EFECTO GLOW/SUTIL ---
   useEffect(() => {
     const canvas = document.getElementById("particle-bg");
-    if (!canvas) return;
+    if (!canvas) return; // Si no existe el canvas, salir
+
+    // Solo en modo oscuro y si está logueado
+    if (theme === "light" || !loggedIn) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
+      return;
+    }
+
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
 
-    const particles = Array.from({ length: 60 }).map(() => ({
+    const particles = Array.from({ length: 80 }).map(() => ({
       x: Math.random() * w,
       y: Math.random() * h,
-      r: Math.random() * 2 + 1,
-      dx: (Math.random() - 0.5) * 0.4,
-      dy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 1.5 + 0.5, // Partículas más pequeñas
+      dx: (Math.random() - 0.5) * 0.3, // Movimiento más lento
+      dy: (Math.random() - 0.5) * 0.3,
     }));
 
+    let animationFrameId;
+
     function draw() {
+      // Re-comprobación de tema
+      if (theme === "light" || !loggedIn) {
+        cancelAnimationFrame(animationFrameId);
+        return;
+      }
       ctx.clearRect(0, 0, w, h);
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,255,255,0.25)";
+        // Color sutil y ligeramente azulado en modo oscuro (el 'glow')
+        ctx.fillStyle = "rgba(0, 122, 255, 0.15)";
         ctx.fill();
         p.x += p.dx;
         p.y += p.dy;
-        if (p.x < 0 || p.x > w) p.dx *= -1;
-        if (p.y < 0 || p.y > h) p.dy *= -1;
+        // Reinicio más suave de partículas
+        if (p.x < 0 || p.x > w) p.x = p.x < 0 ? w : 0;
+        if (p.y < 0 || p.y > h) p.y = p.y < 0 ? h : 0;
       });
-      requestAnimationFrame(draw);
+      animationFrameId = requestAnimationFrame(draw);
     }
     draw();
 
@@ -133,20 +639,26 @@ export default function ClearoApp() {
       h = canvas.height = window.innerHeight;
     };
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [theme, loggedIn]); // Dependencia del estado de login y tema
 
+  // --- COMPONENTE PRINCIPAL RENDER ---
   return (
     <div
       style={{
         background: rootBg,
         color: textColor,
         minHeight: "100vh",
+        // Tipo de letra formal y moderno: 'Inter'
         fontFamily:
-          "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
+          "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
         transition: "background 0.3s ease, color 0.3s ease",
       }}
     >
+      {/* Fondo de Partículas (Canvas) - Solo visible en Dark Mode y loggeado */}
       <canvas
         id="particle-bg"
         style={{
@@ -156,215 +668,452 @@ export default function ClearoApp() {
           width: "100%",
           height: "100%",
           zIndex: -1,
-          opacity: 0.16,
+          opacity: theme === "dark" && loggedIn ? 0.08 : 0, // Opacidad más sutil
+          transition: "opacity 0.8s ease",
         }}
       ></canvas>
 
+      {/* --- ESTILOS OPTIMIZADOS (CSS-in-JS) --- */}
       <style>{`
+        /* Variables de Tema Globales */
         :root {
           --deep: ${COLORS.deepBlue};
           --teal: ${COLORS.teal};
-          --light: ${COLORS.lightGray};
+          --teal-alpha: ${theme === "dark" ? "rgba(0, 122, 255, 0.5)" : "rgba(0, 122, 255, 0.4)"};
+          --teal-light-alpha: ${theme === "dark" ? "rgba(0, 122, 255, 0.15)" : "rgba(0, 122, 255, 0.08)"};
+          --teal-light-alpha-hover: ${theme === "dark" ? "rgba(0, 122, 255, 0.2)" : "rgba(0, 122, 255, 0.15)"};
           --card: ${cardBg};
           --border: ${borderColor};
-          --accent-warn: ${COLORS.accentWarn};
+          --text-color: ${textColor};
+          --text-color-active: ${textActiveColor};
+          --accent-warn: ${COLORS.statusWarning};
+          --shadow: ${theme === "dark" ? "0 10px 40px rgba(0,0,0,0.6)" : "0 8px 30px rgba(17,24,39,0.06)"};
+          --shadow-btn: ${theme === "dark" ? "0 4px 12px rgba(2,8,20,0.3)" : "0 4px 12px rgba(17,24,39,0.04)"};
+          --hover-bg: ${theme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}; /* Más oscuro en dark/más claro en light */
+          --hover-bg-subtle: ${theme === "dark" ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)"}; /* Para elementos sutiles */
+          --muted-color: ${theme === "dark" ? "rgba(255,255,255,0.65)" : "rgba(75,85,99,1)"};
         }
         * { box-sizing: border-box; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
         body, html, #root { margin:0; padding:0; height:100%; }
+
+        /* Navbar Profesional y Superpuesto (Efecto Blur/Cristal) */
         .navbar {
-          height: 64px;
+          height: 72px;
           display:flex;
           align-items:center;
           justify-content:space-between;
-          padding: 10px 16px;
+          padding: 10px 24px;
           position: sticky;
           top: 0;
-          z-index: 60;
-          background: linear-gradient(180deg, rgba(0,0,0,0.12), transparent);
-          backdrop-filter: blur(6px);
-          border-bottom: 1px solid rgba(255,255,255,0.03);
+          z-index: 100;
+          background: ${theme === "dark" ? "rgba(11, 17, 26, 0.95)" : "rgba(255, 255, 255, 0.95)"};
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-bottom: 1px solid var(--border);
+          transition: background 0.3s ease, border-color 0.3s ease;
         }
+
+        /* Brand y Logo */
         .brand { display:flex; align-items:center; gap:12px; }
         .logo-pill {
-          width:48px; height:48px; border-radius:12px;
+          width:52px; height:52px; border-radius:14px;
           background: var(--deep);
           display:flex; align-items:center; justify-content:center;
-          box-shadow: 0 10px 30px rgba(5,38,74,0.25), inset 0 -8px 20px rgba(0,0,0,0.18);
+          /* Sombra con efecto 'glow' */
+          box-shadow: 0 10px 30px rgba(89, 93, 97, 0.35), inset 0 -8px 20px rgba(0,0,0,0.18);
           cursor:pointer;
           overflow:hidden;
+          transition: transform .2s cubic-bezier(.2,.9,.3,1);
         }
-        .logo-pill img { width: 72%; height:72%; object-fit:contain; user-drag: none; pointer-events:none; }
-        .brand-title { display:flex; flex-direction:column; }
-        .brand-title .title { font-weight:700; font-size:1rem; letter-spacing:0.2px; }
-        .brand-title .subtitle { font-size:0.78rem; color: rgba(255,255,255,0.65); margin-top:2px; }
+        .logo-pill:hover { transform: scale(1.05); } /* Añadida animación de hover al logo */
+        .logo-pill img { width: 68%; height:68%; object-fit:contain; user-drag: none; pointer-events:none; }
+        .brand-title .title { font-weight:700; font-size:1.15rem; letter-spacing:0.2px; color: var(--text-color); }
+        .brand-title .subtitle { font-size:0.8rem; color: var(--muted-color); margin-top:2px; font-weight:500; }
         .actions { display:flex; gap:10px; align-items:center; }
+
+        /* Botones Mejorados */
         .btn {
-          min-width:44px;
-          padding: 8px 12px;
-          border-radius:12px;
-          border: 1px solid var(--border);
-          background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-          color: inherit;
-          font-weight:600;
-          cursor:pointer;
-          box-shadow: 0 6px 18px rgba(2,8,20,0.24);
-          transition: transform .16s ease, box-shadow .16s ease, background .2s ease;
+          min-width:48px; padding: 10px 16px; border-radius:10px;
+          border: 1px solid var(--border); background: var(--hover-bg-subtle);
+          color: inherit; font-weight:600; cursor:pointer;
+          box-shadow: var(--shadow-btn);
+          transition: all .2s cubic-bezier(.2,.9,.3,1);
+          outline: none;
         }
-        .btn:active { transform: translateY(1px) scale(0.995); }
+        .btn:hover {
+          background: var(--hover-bg);
+          transform: translateY(-1px);
+        }
+        .btn:active { transform: translateY(1px) scale(0.98); }
         .btn.cta {
-          background: linear-gradient(135deg, var(--teal), #0e9f88);
-          color: white;
-          border: none;
+          background: linear-gradient(135deg, ${COLORS.teal}, ${COLORS.tealLight});
+          color: white; border: none;
+          /* Sombra más llamativa para CTA (Glow Azul) */
+          box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
         }
-        .wrap { max-width: 1100px; margin: 0 auto; padding: 14px; }
+
+        /* Contenedor Principal (Mobile-First y Responsive) */
+        .wrap { max-width: 1300px; margin: 0 auto; padding: 24px 20px; }
+        @media(max-width: 600px) {
+          .wrap { padding: 16px 12px; }
+          .navbar { padding: 10px 16px; }
+        }
+
+        /* Estilos de Tarjeta (Caja) Optimizado */
         .card {
           background: var(--card);
-          border-radius: 14px;
-          padding: 16px;
+          border-radius: 18px;
+          padding: 24px;
           border: 1px solid var(--border);
-          box-shadow: 0 10px 40px rgba(2,8,24,0.28);
+          box-shadow: var(--shadow);
+          transition: all 0.3s ease;
         }
-        .grid { display:grid; grid-template-columns: 1fr; gap: 14px; }
+
+        /* Grid para Desktop (Responsive) */
+        .grid { display:grid; grid-template-columns: 1fr; gap: 24px; }
+        .grid-3cols { grid-template-columns: 1fr; gap: 24px; }
+
         @media(min-width: 980px) {
-          .grid { grid-template-columns: 1fr 360px; gap:20px; align-items:start; }
+          .grid {
+            grid-template-columns: 2fr 1fr;
+            gap:32px;
+            align-items:start;
+          }
+          .grid-2cols {
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+          }
+          .grid-3cols { 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 24px;
+          }
+          .sidebar {
+            position: sticky;
+            top: 96px;
+          }
         }
-        table { width:100%; border-collapse: collapse; font-size:0.95rem; }
-        th, td { padding: 10px 8px; text-align:left; border-bottom: 1px solid rgba(255,255,255,0.03); }
-        thead th { color: rgba(255,255,255,0.55); font-weight:700; font-size:0.88rem; }
-        .muted { color: rgba(255,255,255,0.65); font-size:0.95rem; }
-        .mini { font-size:0.88rem; color: rgba(255,255,255,0.62); }
+        
+        /* Tablas */
+        .table-container { overflow-x: auto; }
+        table { width:100%; border-collapse: separate; border-spacing: 0; font-size:0.95rem; min-width: 600px; }
+        th, td { padding: 12px 10px; text-align:left; border-bottom: 1px solid var(--border); }
+        thead th { color: var(--muted-color); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; }
+        tbody tr:last-child td { border-bottom: none; }
+        /* Animación de filas mejorada (el whileHover está en el componente) */
+        
+        /* Overlay (Menú) - Mejor Superposición y Efecto Blur */
         .overlay {
           position: fixed;
-          right: 12px;
-          top: 74px;
-          width:320px;
-          max-height: 78vh;
+          right: 20px;
+          top: 84px;
+          width:340px;
+          max-height: 80vh;
           overflow:auto;
-          background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-          border-radius: 16px;
-          padding: 12px;
+          background: ${theme === "dark" ? "rgba(21, 27, 38, 0.96)" : "rgba(255, 255, 255, 0.96)"};
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 16px;
           border: 1px solid var(--border);
-          box-shadow: 0 30px 80px rgba(2,8,20,0.5);
-          z-index: 99999;
+          box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+          z-index: 101;
         }
+        
+        /* Corrección Móvil para Overlay */
         @media(max-width:720px){
-          .overlay { left: 12px; right: 12px; width: auto; top: 72px; max-height: calc(100vh - 110px); padding: 14px; }
+          .overlay { left: 16px; right: 16px; width: auto; top: 82px; max-height: calc(100vh - 120px); }
         }
+        
+        /* Elementos del Menú (Framer Motion) */
         .menu-item {
-          padding: 12px; border-radius: 12px; cursor:pointer; margin-bottom: 8px;
-          transition: transform .14s cubic-bezier(.2,.9,.3,1), background .14s;
+          padding: 14px; border-radius: 14px; cursor:pointer; margin-bottom: 8px;
+          transition: transform .2s cubic-bezier(.2,.9,.3,1), background .2s ease;
           display:flex; flex-direction:column; gap:6px;
-          background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
         }
-        .menu-item:hover { transform: translateX(6px); background: linear-gradient(90deg, rgba(22,160,133,0.12), rgba(22,160,133,0.06)); box-shadow: 0 8px 30px rgba(12,85,78,0.06); color: white; }
-        .hint { font-size:0.88rem; color: rgba(255,255,255,0.6); }
+
+        /* Estilos de Formulario y Utilidad */
         .input {
-          width:100%; padding:12px 14px; border-radius:12px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: inherit;
+          width:100%; padding:14px 16px; border-radius:12px; border: 1px solid var(--border);
+          background: ${theme === "dark" ? "rgba(255,255,255,0.03)" : "#f9fafb"}; color: inherit;
+          transition: border-color 0.3s ease, background 0.3s ease;
         }
+        .input:focus { border-color: var(--teal); outline:none; box-shadow: 0 0 0 3px ${theme === "dark" ? "rgba(0, 122, 255, 0.3)" : "rgba(0, 122, 255, 0.1)"}; }
         .seg { display:flex; gap:8px; }
-        .pill { padding:8px 10px; border-radius:999px; font-weight:700; background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); cursor:pointer; }
-        .tiny { font-size:0.82rem; color: rgba(255,255,255,0.5); }
+        .pill {
+          padding:8px 12px; border-radius:999px; font-weight:600;
+          background: var(--hover-bg-subtle); border:1px solid var(--border);
+          cursor:pointer; font-size:0.9rem; transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .pill:hover { background: var(--hover-bg); }
+        .pill.active { background: var(--teal); color: white; border-color: var(--teal); }
+        .muted { color: var(--muted-color); font-size:0.95rem; }
+        .mini { font-size:0.88rem; color: var(--muted-color); }
+        .tiny { font-size:0.78rem; color: var(--muted-color); }
+
+        /* Botón de estado de tabla (Píldoras de Estado) */
+        .status-pill {
+            padding: 4px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        /* Estados basados en la paleta profesional (fondo de baja opacidad) */
+        .status-pill.active, .status-pill.funded, .status-pill.released {
+          background-color: rgba(52, 199, 85, 0.15);
+          color: ${COLORS.statusSuccess};
+        }
+        .status-pill.verified, .status-pill.negotiation {
+          background-color: rgba(0, 122, 255, 0.15);
+          color: ${COLORS.teal};
+        }
+        .status-pill.pending, .status-pill.awaitingapproval, .status-pill.pendingrelease, .status-pill.pendingdeposit, .status-pill.setup {
+          background-color: rgba(255, 149, 0, 0.15);
+          color: ${COLORS.statusWarning};
+        }
+        .status-pill.locked, .status-pill.draft {
+          background-color: rgba(255, 59, 48, 0.15);
+          color: ${COLORS.statusDanger};
+        }
+        .status-pill.held, .status-pill.complete {
+          background-color: rgba(107, 114, 128, 0.15);
+          color: #6b7280; /* Gris oscuro neutro */
+        }
+        
+        /* Estilos para el Activity/Pending */
+        .activity-item:last-child { border-bottom: none !important; }
+
       `}</style>
 
+      {/* --- PANTALLA DE CARGA / INTRO --- */}
       <AnimatePresence>
         {animatingLogin && (
           <motion.div
             key="intro"
-            initial={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.6, ease: "easeInOut" } }}
+            transition={{ duration: 0.2 }}
             style={{
               position: "fixed",
               inset: 0,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: COLORS.deepBlue,
+              background: COLORS.teal,
               zIndex: 999998,
             }}
           >
             <motion.img
               src={logo}
               alt="Clearo"
-              initial={{ rotate: 0, opacity: 0 }}
-              animate={{ rotate: -180, opacity: 1 }}
-              transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
-              style={{ width: 140, height: 140, borderRadius: 18, boxShadow: "0 24px 60px rgba(2,8,20,0.6)" }}
+              // Animación de rotación sofisticada
+              initial={{ rotate: -90, scale: 0.8, opacity: 0 }}
+              animate={{ rotate: 0, scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+              style={{
+                width: 140,
+                height: 140,
+                borderRadius: 24,
+                // Sombra de logo más pronunciada
+                boxShadow: "0 24px 60px rgba(2,8,20,0.6)"
+              }}
             />
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* --- NAVBAR (Superpuesto) --- */}
       <header className="navbar" role="banner">
-        <div className="brand" style={{ marginLeft: 6 }}>
+        <div className="brand">
           <motion.div
             className="logo-pill"
             onClick={() => setLogoTrigger((v) => v + 1)}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 12 }}
           >
             <AnimatePresence mode="wait">
               <motion.img
                 key={logoTrigger}
                 src={logo}
                 alt="Clearo"
-                initial={{ rotate: 0, opacity: 0 }}
-                animate={{ rotate: -180, opacity: 1 }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ rotate: -180, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 style={{ width: "70%", height: "70%", objectFit: "contain", pointerEvents: "none" }}
               />
             </AnimatePresence>
           </motion.div>
 
-          <div className="brand-title" style={{ marginLeft: 4 }}>
+          <div className="brand-title">
             <div className="title">Clearo</div>
             <div className="subtitle">Banking · Escrow · Finance Ops</div>
           </div>
         </div>
 
-        <div className="actions" style={{ marginRight: 6 }}>
-          <button
-            className="btn"
-            aria-expanded={menuOpen}
-            aria-controls="main-menu"
-            onClick={() => setMenuOpen((s) => !s)}
-            title="Open menu"
-          >
-            Menu ▾
-          </button>
+        <div className="actions">
+          {loggedIn && (
+            <motion.button
+              className="btn"
+              aria-expanded={menuOpen}
+              aria-controls="main-menu"
+              onClick={() => setMenuOpen((s) => !s)}
+              title="Open menu"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Menu {menuOpen ? "▲" : "▼"}
+            </motion.button>
+          )}
 
-          <button
+          <motion.button
             className="btn cta"
             onClick={() => {
               setActive("dashboard");
               setMenuOpen(false);
+              if (!loggedIn) handleSignIn();
             }}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Dashboard
-          </button>
+            {loggedIn ? "Dashboard" : "Sign In"}
+          </motion.button>
         </div>
       </header>
 
+      {/* --- OVERLAY DEL MENÚ --- */}
+      <AnimatePresence>
+        {loggedIn && menuOpen && (
+          <motion.div
+            className="overlay"
+            id="main-menu"
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            role="menu"
+          >
+            <h3 style={{ margin: "0 0 16px 0", color: COLORS.teal }}>Sections</h3>
+            <MenuItem 
+              id="dashboard" 
+              active={active} 
+              onClick={openSection} 
+              label="Dashboard" 
+              hint="Overview & Activity Feed" 
+              icon={ICONS.dashboard} 
+            />
+            <MenuItem 
+              id="bankaccounts" 
+              active={active} 
+              onClick={openSection} 
+              label="Bank Accounts" 
+              hint="Account Balances & Transfers" 
+              icon={ICONS.bankaccounts} 
+            />
+            <MenuItem 
+              id="cards" 
+              active={active} 
+              onClick={openSection} 
+              label="Cards" 
+              hint="Corporate Cards & Limits" 
+              icon={ICONS.cards} 
+            />
+            <MenuItem 
+              id="escrow" 
+              active={active} 
+              onClick={openSection} 
+              label="Escrow" 
+              hint="Held Funds & Releases" 
+              icon={ICONS.escrow} 
+            />
+            <MenuItem 
+              id="loans" 
+              active={active} 
+              onClick={openSection} 
+              label="Loans & Credit" 
+              hint="Financing and Borrowing" 
+              icon={ICONS.loans} 
+            />
+
+            <hr style={{ margin: "16px 0", border: 'none', borderTop: '1px solid var(--border)' }} />
+
+            <h3 style={{ margin: "0 0 16px 0", color: COLORS.accentSecondary }}>DeFi Ops</h3>
+            <MenuItem 
+              id="factory" 
+              active={active} 
+              onClick={openSection} 
+              label="Contract Factory" 
+              hint="Asset Securitization" 
+              icon={ICONS.factory} 
+            />
+            <MenuItem 
+              id="trades" 
+              active={active} 
+              onClick={openSection} 
+              label="Asset Trades" 
+              hint="DeFi Transactions" 
+              icon={ICONS.trades} 
+            />
+            <MenuItem 
+              id="advance" 
+              active={active} 
+              onClick={openSection} 
+              label="Advance Pay" 
+              hint="Early Settlement Discounts" 
+              icon={ICONS.advance} 
+            />
+
+            <hr style={{ margin: "16px 0", border: 'none', borderTop: '1px solid var(--border)' }} />
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 8 }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <div className="mini" style={{ color: "var(--muted-color)" }}>Theme:</div>
+                <div className="seg">
+                  <button className={`pill ${theme === "dark" ? "active" : ""}`} onClick={() => setTheme("dark")}>Dark</button>
+                  <button className={`pill ${theme === "light" ? "active" : ""}`} onClick={() => setTheme("light")}>Light</button>
+                </div>
+              </div>
+              <button 
+                className="btn" 
+                onClick={() => { setLoggedIn(false); setMenuOpen(false); setActive("login"); }}
+                style={{ background: COLORS.statusDanger, color: 'white', border: 'none' }}
+              >
+                Logout
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* --- CONTENIDO PRINCIPAL --- */}
       <main className="wrap" role="main">
         {!loggedIn ? (
-          <div style={{ maxWidth: 540, margin: "64px auto" }} className="card" aria-live="polite">
-            <motion.h2 initial={{ y: -8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4 }}>
-              Welcome to Clearo
-            </motion.h2>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.08 }}>
+          /* --- LOGIN VIEW --- */
+          <motion.div
+            style={{ maxWidth: 480, margin: "64px auto 120px auto" }}
+            className="card"
+            aria-live="polite"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <h2 style={{ margin: 0, marginBottom: 8, fontWeight: 700 }}>Welcome to Clearo</h2>
+            <p className="muted" style={{ marginTop: 0 }}>
               Securely manage bank accounts, escrow and finance operations.
-            </motion.p>
+            </p>
 
-            <div style={{ marginTop: 14 }}>
+            <div style={{ marginTop: 24 }}>
               <input ref={emailRef} className="input" placeholder="Email or username" />
-              <input className="input" placeholder="Password" type="password" style={{ marginTop: 10 }} />
+              <input className="input" placeholder="Password" type="password" style={{ marginTop: 14 }} />
             </div>
 
-            <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
+            <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
               <button
                 className="btn cta"
                 onClick={handleSignIn}
-                style={{ flex: 1 }}
+                style={{ flex: 1, height: 48, fontSize: "1.1rem" }}
               >
                 Sign In
               </button>
@@ -378,473 +1127,20 @@ export default function ClearoApp() {
               </button>
             </div>
 
-            <div style={{ marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid var(--border)", paddingTop: 16 }}>
               <div className="tiny">Demo credentials: any email / password</div>
-              <div style={{ display: "flex", gap: 8 }}>
-                <div className="mini" style={{ color: "rgba(255,255,255,0.5)" }}>Theme:</div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <div className="mini" style={{ color: "var(--muted-color)" }}>Theme:</div>
                 <div className="seg">
-                  <button className="pill" onClick={() => setTheme("dark")}>Dark</button>
-                  <button className="pill" onClick={() => setTheme("light")}>Light</button>
+                  <button className={`pill ${theme === "dark" ? "active" : ""}`} onClick={() => setTheme("dark")}>Dark</button>
+                  <button className={`pill ${theme === "light" ? "active" : ""}`} onClick={() => setTheme("light")}>Light</button>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ) : (
-          <>
-            <AnimatePresence>
-              {menuOpen && (
-                <motion.nav
-                  className="overlay"
-                  id="main-menu"
-                  initial={{ opacity: 0, y: -8, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.99 }}
-                  transition={{ duration: 0.28, ease: [0.2, 0.9, 0.3, 1] }}
-                >
-                  <div className="menu-item" onClick={() => openSection("dashboard")}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <strong>Dashboard</strong>
-                      <span className="mini muted">Overview</span>
-                    </div>
-                    <div className="hint">Balances, cashflow and activity</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("bankaccounts")}>
-                    <strong>Bank Accounts</strong>
-                    <div className="hint">Link IBANs, SWIFT, verify accounts</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("cards")}>
-                    <strong>Card Management</strong>
-                    <div className="hint">Issue, limit and monitor cards</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("loans")}>
-                    <strong>Loans & Credits</strong>
-                    <div className="hint">Create and manage credit facilities</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("escrow")}>
-                    <strong>Escrow</strong>
-                    <div className="hint">Create and release escrow contracts</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("factory")}>
-                    <strong>Factory</strong>
-                    <div className="hint">Structured products & pooled finance</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("advance")}>
-                    <strong>Advance Payment</strong>
-                    <div className="hint">Early payment discounts</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("trades")}>
-                    <strong>Real Estate Trades</strong>
-                    <div className="hint">Seller / buyer contract flow (non-crypto)</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("release")}>
-                    <strong>Release Payment</strong>
-                    <div className="hint">Approve or reject escrow releases</div>
-                  </div>
-
-                  <div className="menu-item" onClick={() => openSection("user")}>
-                    <strong>User Profile</strong>
-                    <div className="hint">Roles, 2FA and audit logs</div>
-                  </div>
-
-                  <div style={{ height: 1, background: "rgba(255,255,255,0.03)", margin: "12px 0", borderRadius: 2 }} />
-
-                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                    <div style={{ flex: 1 }}>
-                      <div className="mini muted">Theme</div>
-                      <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
-                        <button className="pill" onClick={() => setTheme("dark")}>Dark</button>
-                        <button className="pill" onClick={() => setTheme("light")}>Light</button>
-                      </div>
-                    </div>
-                    <div style={{ textAlign: "right" }}>
-                      <button className="btn" onClick={() => { setLoggedIn(false); setMenuOpen(false); }}>Sign Out</button>
-                    </div>
-                  </div>
-                </motion.nav>
-              )}
-            </AnimatePresence>
-
-            <div className="grid" style={{ marginTop: 18 }}>
-              <div>
-                <AnimatePresence mode="wait">
-                  {active === "dashboard" && (
-                    <motion.section
-                      className="card"
-                      key="dashboard"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 6 }}
-                      transition={{ duration: 0.28 }}
-                    >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
-                        <div>
-                          <h3 style={{ margin: 0 }}>Total Liquidity</h3>
-                          <div className="muted">Combined bank balances & cash equivalents</div>
-                        </div>
-                        <div style={{ textAlign: "right" }}>
-                          <div style={{ fontWeight: 800, fontSize: 20 }}>$179,400</div>
-                          <div className="tiny muted">Updated: Today</div>
-                        </div>
-                      </div>
-
-                      <div style={{ height: 260, marginTop: 14 }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                          <LineChart data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" stroke={theme === "dark" ? "#071722" : "#eef6fb"} />
-                            <XAxis dataKey="day" stroke={theme === "dark" ? "#8fa3a7" : "#64748b"} />
-                            <YAxis stroke={theme === "dark" ? "#8fa3a7" : "#64748b"} />
-                            <Tooltip contentStyle={{ background: theme === "dark" ? "#071017" : "#fff" }} />
-                            <Line type="monotone" dataKey="value" stroke={COLORS.teal} strokeWidth={3} dot={{ r: 3 }} />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </div>
-
-                      <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-                        <button className="btn cta" onClick={() => openSection("bankaccounts")}>New Transfer</button>
-                        <button className="btn cta" onClick={() => openSection("escrow")} style={{ background: "linear-gradient(135deg,#0f8e78,#14ac93)" }}>Create Escrow</button>
-                        <button className="btn" onClick={() => alert("Reports demo")}>Reports</button>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "bankaccounts" && (
-                    <motion.section className="card" key="bankaccounts" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Bank Account Management</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Add, verify and manage external bank accounts (IBAN, SWIFT)</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <table>
-                          <thead><tr><th>Account</th><th>Ref</th><th>Balance</th><th></th></tr></thead>
-                          <tbody>
-                            {bankAccounts.map(a => (
-                              <tr key={a.id}>
-                                <td>{a.name}</td>
-                                <td className="mini muted">{a.id}</td>
-                                <td style={{ fontWeight: 700 }}>${a.balance.toLocaleString()}</td>
-                                <td><button className="btn" onClick={() => alert("Account details demo")}>View</button></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-
-                        <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-                          <button className="btn cta">Link Bank Account</button>
-                          <button className="btn" onClick={() => alert("Verify via micro-deposits demo")}>Verify</button>
-                        </div>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "cards" && (
-                    <motion.section className="card" key="cards" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Card Management</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Issue cards, set spend limits, manage vendors.</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <table>
-                          <thead><tr><th>Card</th><th>Holder</th><th>Type</th><th>Limit</th><th></th></tr></thead>
-                          <tbody>
-                            {cards.map(c => (
-                              <tr key={c.id}>
-                                <td>{c.id}</td>
-                                <td>{c.holder}</td>
-                                <td>{c.type}</td>
-                                <td>{c.limit ? `$${c.limit.toLocaleString()}` : "—"}</td>
-                                <td><button className="btn" onClick={() => alert("Manage card demo")}>Manage</button></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-
-                        <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-                          <button className="btn cta">Issue New Card</button>
-                          <button className="btn" onClick={() => alert("Export demo")}>Export</button>
-                        </div>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "loans" && (
-                    <motion.section className="card" key="loans" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Loans & Credit Lines</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>View active loans and manage schedules</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <table>
-                          <thead><tr><th>ID</th><th>Borrower</th><th>Amount</th><th>Status</th><th></th></tr></thead>
-                          <tbody>
-                            {loans.map(l => (
-                              <tr key={l.id}>
-                                <td>{l.id}</td>
-                                <td>{l.borrower}</td>
-                                <td>${l.amount.toLocaleString()}</td>
-                                <td className="mini muted">{l.status}</td>
-                                <td><button className="btn" onClick={() => alert("Loan details demo")}>Details</button></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-
-                        <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-                          <button className="btn cta">Create Loan</button>
-                          <button className="btn" onClick={() => alert("Run credit check demo")}>Run Credit Check</button>
-                        </div>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "escrow" && (
-                    <motion.section className="card" key="escrow" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Escrow Management</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Create, review and release escrow contracts</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <table>
-                          <thead><tr><th>ID</th><th>Parties</th><th>Amount</th><th>Status</th><th></th></tr></thead>
-                          <tbody>
-                            {escrows.map(e => (
-                              <tr key={e.id}>
-                                <td>{e.id}</td>
-                                <td>{e.parties}</td>
-                                <td>${e.amount.toLocaleString()}</td>
-                                <td className="mini muted">{e.status}</td>
-                                <td><button className="btn cta" onClick={() => alert("View escrow demo")}>View</button></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-
-                        <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-                          <button className="btn cta" onClick={() => alert("Create escrow demo")}>Create Escrow Contract</button>
-                          <button className="btn" onClick={() => alert("Assign custodian demo")}>Assign Custodian</button>
-                        </div>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "factory" && (
-                    <motion.section className="card" key="factory" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Finance Factory</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Pooled products & mortgage structuring</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <div className="mini muted">Existing factories</div>
-                        <ul style={{ marginTop: 8 }}>
-                          {factoryContracts.map(f => <li key={f.id}><strong>{f.title}</strong> — {f.status}</li>)}
-                        </ul>
-
-                        <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-                          <button className="btn cta">Create Factory</button>
-                          <button className="btn" onClick={() => alert("Model cashflows demo")}>Model Cashflows</button>
-                        </div>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "advance" && (
-                    <motion.section className="card" key="advance" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Advance Payment Offers</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Offer discounts to counterparties for faster settlement</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <table>
-                          <thead><tr><th>Offer</th><th>Discount</th><th>Description</th><th></th></tr></thead>
-                          <tbody>
-                            {advancePaymentOffers.map(a => (
-                              <tr key={a.id}>
-                                <td>{a.id}</td>
-                                <td>{a.discountPct}%</td>
-                                <td>{a.description}</td>
-                                <td><button className="btn cta" onClick={() => alert("Apply advance demo")}>Apply</button></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "trades" && (
-                    <motion.section className="card" key="trades" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Real Estate Trade Flow</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Seller / Buyer contract lifecycle (property deals)</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <table>
-                          <thead><tr><th>ID</th><th>Role</th><th>Asset</th><th>Amount</th><th>Status</th></tr></thead>
-                          <tbody>
-                            {trades.map(t => (
-                              <tr key={t.id}>
-                                <td>{t.id}</td>
-                                <td>{t.type}</td>
-                                <td>{t.object}</td>
-                                <td>${t.amount.toLocaleString()}</td>
-                                <td className="mini muted">{t.status}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-
-                        <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-                          <button className="btn cta">New Trade Contract</button>
-                          <button className="btn" onClick={() => alert("Match counterparty demo")}>Match Counterparty</button>
-                        </div>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "release" && (
-                    <motion.section className="card" key="release" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Release Payment</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Approve or reject escrow releases after verification</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <table>
-                          <thead><tr><th>Escrow ID</th><th>Amount</th><th>Requested by</th><th>Status</th><th></th></tr></thead>
-                          <tbody>
-                            {escrows.map(e => (
-                              <tr key={e.id}>
-                                <td>{e.id}</td>
-                                <td>${e.amount.toLocaleString()}</td>
-                                <td>Buyer B</td>
-                                <td className="mini muted">{e.status}</td>
-                                <td>
-                                  <button className="btn cta" onClick={() => alert("Release funds demo")}>Release</button>
-                                  <button className="btn" onClick={() => alert("Reject demo")}>Reject</button>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "user" && (
-                    <motion.section className="card" key="user" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>User Profile</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Account info, roles, security and audits</div>
-
-                      <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                        <div>
-                          <div className="mini muted">Name</div>
-                          <div style={{ fontWeight: 700 }}>Alex Morgan</div>
-
-                          <div className="mini muted" style={{ marginTop: 8 }}>Email</div>
-                          <div>alex.morgan@clearo.com</div>
-                        </div>
-
-                        <div>
-                          <div className="mini muted">Role</div>
-                          <div style={{ fontWeight: 700 }}>Operator</div>
-
-                          <div className="mini muted" style={{ marginTop: 8 }}>2FA</div>
-                          <div>Enabled</div>
-                        </div>
-                      </div>
-
-                      <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-                        <button className="btn cta">Edit Profile</button>
-                        <button className="btn" onClick={() => alert("Change password demo")}>Change Password</button>
-                        <button className="btn" onClick={() => alert("View audits demo")}>Audit Logs</button>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence mode="wait">
-                  {active === "admin" && (
-                    <motion.section className="card" key="admin" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.24 }}>
-                      <h3 style={{ margin: 0 }}>Administration</h3>
-                      <div className="muted" style={{ marginTop: 6 }}>Manage roles, access and global platform settings</div>
-
-                      <div style={{ marginTop: 12 }}>
-                        <div className="mini muted">Roles overview</div>
-                        <ul style={{ marginTop: 8 }}>
-                          <li><strong>Super Admin</strong> — Full control</li>
-                          <li><strong>Operator</strong> — Manage operations & escrows</li>
-                          <li><strong>Auditor</strong> — Read-only logs & reports</li>
-                        </ul>
-
-                        <div style={{ marginTop: 12, display: "flex", gap: 8 }}>
-                          <button className="btn cta">Create User</button>
-                          <button className="btn" onClick={() => alert("View audit trail demo")}>View Audit Trail</button>
-                        </div>
-                      </div>
-                    </motion.section>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              <aside>
-                <div className="card" style={{ marginBottom: 14 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div>
-                      <div className="mini muted">Account</div>
-                      <div style={{ fontWeight: 800, fontSize: 18 }}>$137,940</div>
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-                      <div className="mini muted">Available</div>
-                      <div style={{ fontWeight: 700 }}>$74,200</div>
-                    </div>
-                  </div>
-
-                  <div style={{ height: 12 }} />
-
-                  <div style={{ display: "flex", gap: 8 }}>
-                    <button className="btn cta" style={{ flex: 1 }} onClick={() => openSection("bankaccounts")}>New Transfer</button>
-                    <button className="btn" onClick={() => openSection("escrow")}>Escrow</button>
-                  </div>
-                </div>
-
-                <div className="card" style={{ marginBottom: 14 }}>
-                  <h4 style={{ margin: 0 }}>Quick Actions</h4>
-                  <div className="muted small">Frequent</div>
-                  <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 10 }}>
-                    <button className="btn cta" onClick={() => openSection("escrow")}>Create Escrow</button>
-                    <button className="btn" onClick={() => openSection("advance")}>Offer Advance</button>
-                    <button className="btn" onClick={() => openSection("trades")}>Open Trade</button>
-                  </div>
-                </div>
-
-                <div className="card">
-                  <h4 style={{ margin: 0 }}>Notifications</h4>
-                  <div className="muted small">Recent</div>
-                  <ul style={{ marginTop: 10 }}>
-                    <li>Incoming transfer $5,000 posted</li>
-                    <li>Escrow ESC-9001 awaiting release</li>
-                    <li>Loan LN-1002 has pending approval</li>
-                  </ul>
-                </div>
-              </aside>
-            </div>
-          </>
+          /* --- APLICACIÓN PRINCIPAL (VISTAS ACTIVAS) --- */
+          <ActiveView active={active} theme={theme} data={data} />
         )}
       </main>
     </div>
