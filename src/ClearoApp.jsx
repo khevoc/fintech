@@ -133,6 +133,24 @@ const ICONS = {
   contract: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>,
   cashflow: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17l-4.5-4.5L9 17L3 11"/></svg>,
   total: 'Σ',
+  invoice: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 8V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v1"/><path d="M3 12h18"/><path d="M7 16h10"/><path d="M7 20h10"/></svg>,
+  // Otros iconos según sea necesario
+  bell: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
+  dollarSign: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+  wallet: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2.08"/><line x1="16" y1="13" x2="16" y2="17"/></svg>,
+  hourglass: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22V2L7 12z"/><path d="M7 2v20L17 12z"/></svg>,
+  gift: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+  partyPopper: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5.8 11.3L2 14.1l3.8 2.8L2 19.9l3.8 2.8L9.6 19.9l3.8 2.8L9.6 17.1l3.8-2.8L9.6 11.3l-3.8-2.8L2 11.3z"/><path d="M17.5 7.5l-4-4"/><path d="M19.9 14.2c-2.4 2.4-5.2 2.4-7.6 0l-4-4c-.2-.2-.2-.4 0-.6l.7-.7c.2-.2.4-.2.6 0l4 4c2.4 2.4 5.2 2.4 7.6 0l4-4c.2-.2.4-.2.6 0l.7.7c.2.2.2.4 0 .6z"/><path d="M22.5 9.5l-4-4"/><path d="M12 22a7 7 0 1 0 0-14 7 7 0 0 0 0 14z"/></svg>, // Un poco más complejo, pero ideal para celebración
+  handshake: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A2.5 2.5 0 0 0 16 7.5v-1A2.5 2.5 0 0 0 14 4h-4a2.5 2.5 0 0 0-2.5 2.5v1A2.5 2.5 0 0 0 6 9.5c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"/><path d="M10 2H6a2 2 0 0 0-2 2v10l3 3 7-7"/><path d="M18 10h4a2 2 0 0 1 2 2v10l-3-3-7-7"/></svg>,
+  fileCheck: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>, 
+  fileText: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>,
+  tag: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414L10.586 21.414a2 2 0 0 0 2.828 0l7.172-7.172a2 2 0 0 0 0-2.828L12.586 2.586z"/><circle cx="8" cy="8" r="1"/></svg>,
+  percent: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>,
+  circleDollarSign: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 2v2"/><path d="M12 20v-2"/></svg>,
+  arrowUpCircle: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 12 12 8 8 12"/><line x1="12" y1="16" x2="12" y2="8"/></svg>,
+  package: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="m7.5 19.73 9-5.15"/><path d="M2.43 12.32 12 17.68l9.57-5.36L12 6.96l-9.57 5.36z"/><polyline points="3.29 6.27 12 11.64 20.71 6.27"/><polyline points="3.29 17.73 12 12.36 20.71 17.73"/></svg>,
+  bot: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="16" rx="2"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M12 2v2"/><path d="M12 14v4"/><path d="M12 18v4"/><circle cx="12" cy="12" r="2"/></svg>,
+
 };
 
 
@@ -311,7 +329,7 @@ const AccountsView = ({ accounts }) => (
     className="card" 
     style={{ minHeight: '60vh' , marginBottom: 60}}
   >
-    <h2 style={{marginTop: 0, marginBottom: 20}}>🏦 Bank Accounts</h2>
+    <h2 style={{marginTop: 0, marginBottom: 20}}>{ICONS.bankaccounts} Bank Accounts</h2>
     <div className="table-container">
       <table>
         <thead>
@@ -421,13 +439,13 @@ const LoansView = ({ loans }) => (
       <DataBox 
         title="Active Loan Capital" 
         value={formatCurrency(loans.filter(l => l.status === 'Active').reduce((sum, l) => sum + l.amount, 0))} 
-        icon={'💵'} 
+        icon={ICONS.dollarSign} 
         color={COLORS.teal}
       />
       <DataBox 
         title="Pending Loan Applications" 
         value={loans.filter(l => l.status === 'Pending').length.toString()} 
-        icon={'⏳'} 
+        icon={ICONS.hourglass}
         color={COLORS.statusWarning}
       />
     </div>
@@ -536,19 +554,19 @@ const TradesView = ({ trades }) => (
       <DataBox 
         title="Total Value (Complete)" 
         value={formatCurrency(trades.filter(t => t.status === 'Complete').reduce((sum, t) => sum + t.amount, 0))} 
-        icon={'🎉'} 
+        icon={ICONS.partyPopper} 
         color={COLORS.tealLight}
       />
       <DataBox 
         title="Pending Negotiations" 
         value={trades.filter(t => t.status === 'Negotiation').length.toString()} 
-        icon={'🤝'} 
+        icon={ICONS.handshake} 
         color={COLORS.statusWarning}
       />
       <DataBox 
         title="Drafts" 
         value={trades.filter(t => t.status === 'Draft').length.toString()} 
-        icon={'📄'} 
+        icon={ICONS.fileText} 
         color={COLORS.accentSecondary}
       />
     </div>
@@ -600,13 +618,13 @@ const ContractFactoryView = ({ factoryContracts }) => (
       <DataBox 
         title="Total Active Factories" 
         value={factoryContracts.filter(f => f.status === 'Active').length.toString()} 
-        icon={'🤖'} 
+        icon={ICONS.bot}
         color={COLORS.teal}
       />
       <DataBox 
         title="Total Managed Assets" 
         value={factoryContracts.reduce((sum, f) => sum + f.assets, 0).toLocaleString()} 
-        icon={'📦'} 
+        icon={ICONS.package}
         color={COLORS.tealLight}
       />
     </div>
@@ -656,19 +674,19 @@ const AdvanceOffersView = ({ advancePaymentOffers }) => (
       <DataBox 
         title="Total Offer Value" 
         value={formatCurrency(advancePaymentOffers.reduce((sum, o) => sum + o.amount, 0))} 
-        icon={'💵'} 
+        icon={ICONS.circleDollarSign} 
         color={COLORS.teal}
       />
       <DataBox 
         title="Max Potential Discount" 
         value={formatCurrency(advancePaymentOffers.reduce((sum, o) => sum + (o.amount * o.discountPct / 100), 0), 'USD')} 
-        icon={'📉'} 
+        icon={ICONS.percent} 
         color={COLORS.tealLight}
       />
       <DataBox 
         title="Offers Available" 
         value={advancePaymentOffers.length.toString()} 
-        icon={'🏷️'} 
+        icon={ICONS.tag} 
         color={COLORS.statusWarning}
       />
     </div>
@@ -833,7 +851,7 @@ const DashboardContent = ({ totalBalance, totalEscrowHeld, totalPendingLoans, ch
 
           {/* Tarjeta de Notificaciones */}
           <div className="card">
-            <h3 style={{ margin: 0, marginBottom: 16, fontSize: '1.2rem' }}>🔔 Latest Activity</h3>
+            <h3 style={{ margin: 0, marginBottom: 16, fontSize: '1.2rem', color: COLORS.statusWarning}}>{ICONS.bell} Latest Activity</h3>
             <div style={{ padding: '0 8px' }}>
               {notifications.map((notif) => (
                 <ActivityItem
@@ -861,7 +879,7 @@ const BottomMobileNav = ({ active, setActive, display, isVisible }) => {
     { id: 'dashboard', icon: ICONS.home, label: 'Home' },
     { id: 'bankaccounts', icon: ICONS.bankaccounts, label: 'Accounts' },
     { id: 'transfer', icon: ICONS.transfer, label: 'Transfer' , action: () => alert('Initiate Transfer') },
-    { id: 'faq', icon: ICONS.faq, label: 'FAQ' },
+    { id: 'faq', icon: ICONS.gift, label: 'Benefits' },
     { id: 'user', icon: ICONS.user, label: 'User' },
   ];
   const visibilityClass = isVisible ? 'flex' : 'none'; 
