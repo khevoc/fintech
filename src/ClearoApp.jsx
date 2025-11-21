@@ -150,6 +150,10 @@ const ICONS = {
   arrowUpCircle: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 12 12 8 8 12"/><line x1="12" y1="16" x2="12" y2="8"/></svg>,
   package: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="m7.5 19.73 9-5.15"/><path d="M2.43 12.32 12 17.68l9.57-5.36L12 6.96l-9.57 5.36z"/><polyline points="3.29 6.27 12 11.64 20.71 6.27"/><polyline points="3.29 17.73 12 12.36 20.71 17.73"/></svg>,
   bot: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="16" rx="2"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M12 2v2"/><path d="M12 14v4"/><path d="M12 18v4"/><circle cx="12" cy="12" r="2"/></svg>,
+  circleX: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>,
+  brain: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5c-3.18 0-5.77 2.45-6.61 5.61A6 6 0 0 0 12 22a7.3 7.3 0 0 0 4.09-1.28l1.41 1.41a1 1 0 0 0 1.41 0l1.41-1.41a1 1 0 0 0 0-1.41l-1.41-1.41A7.3 7.3 0 0 0 22 12a6 6 0 0 0-5.39-5.61C16.63 5 15.12 5 12 5z"/><path d="M12 5v12a5 5 0 0 0 0 10"/><path d="M16 11H8c-2.76 0-5 2.24-5 5v1"/><path d="M12 19V5a5 5 0 0 1 0-10"/><path d="M16 11H8c-2.76 0-5 2.24-5 5v1"/></svg>,
+  ban: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>,
+  lockClosed: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
 
 };
 
@@ -387,7 +391,7 @@ const CardsView = ({ cards }) => (
       <DataBox 
         title="Virtual Cards Locked" 
         value={cards.filter(c => c.status === 'Locked').length.toString()} 
-        icon={'🚫'} 
+        icon={ICONS.ban} 
         color={COLORS.statusDanger}
       />
     </div>
