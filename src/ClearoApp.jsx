@@ -234,6 +234,7 @@ const DataBox = ({ title, value, icon, color }) => (
     animate={{ opacity: 1, y: 0 }}
     style={{
       padding: 24, // Padding ligeramente aumentado
+      margin: '5px',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -252,7 +253,7 @@ const DataBox = ({ title, value, icon, color }) => (
     transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] , type: "spring", stiffness: 300, damping: 25 }}
   >
     <div className="mini" style={{ color: color, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.8 }}>{title}</div>
-    <div style={{ fontSize: '2.4rem', fontWeight: 700, marginTop: 4, display: 'flex', alignItems: 'flex-end', gap: 8, lineHeight: 1.2 }}>
+    <div style={{ fontSize: '1.8rem', fontWeight: 700, marginTop: 4, display: 'flex', alignItems: 'flex-end', gap: 8, lineHeight: 1.2 }}>
       {value}
     </div>
     <div style={{
@@ -713,7 +714,7 @@ const DashboardContent = ({ totalBalance, totalEscrowHeld, totalPendingLoans, ch
       transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }} 
       style={{ animationDelay: '0.1s' }}
     >
-      <h1 style={{marginTop: 0, fontWeight: 800, fontSize: '2.5rem'}}>Welcome back, Clearo!</h1>
+      <h1 style={{marginTop: 0, fontWeight: 800, fontSize: '2.5rem'}}>Welcome back, John!</h1>
       <p className="muted" style={{marginBottom: 32}}>A high-level overview of your finance operations.</p>
       
       {/* Métrica Global Grid */}
@@ -1170,7 +1171,7 @@ export default function ClearoApp() {
           width:340px;
           max-height: 80vh;
           overflow:auto;
-          background: ${theme === "dark" ? "rgba(21, 27, 38, 0.96)" : "rgba(255, 255, 255, 0.96)"};
+          background: ${theme === "dark" ? "rgba(0, 0, 0, 0.7)" : "rgba(255, 255, 255, 0.96)"};
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
           border-radius: 20px;
@@ -1299,7 +1300,6 @@ export default function ClearoApp() {
             </motion.button>
           )}
 
-          
         </div>
 
         <div className="brand-title">
